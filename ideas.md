@@ -42,6 +42,7 @@
 * quick notes
 * make mute state persistent
 
-## Program design:
+## Project-stuff:
 * implement different button types as Widgets instead of just exposing tkinter elements
 * make everything neater and less shitty
+* Setup continous integration and change workflow to add new features through feature branches 
