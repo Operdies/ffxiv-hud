@@ -36,6 +36,8 @@ QOL:
 2. support for specifying when the button should highlight / alert sound should play
 3. enable changing default and highlight color
 4. enable changing color of other buttons as well
+5. support for adding alerts for ventures
+6. first-time setup instead of using my own settings lol
 
 Program design:
 1. implement different button types as Widgets instead of just exposing tkinter elements

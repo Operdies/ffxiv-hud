@@ -6,6 +6,7 @@
 #4,16:Ginger:Lochs:3# yellow
 #6,18: Beech Branch:Fringes:0# red
 #6,18:Torreya Log:Lochs:6#yellow
+4,16:w:w:w
 #8: Doman Yellow: Azim:0# money
 #8,20: Lotus Root: Yanxia:7# yellow
 #10,22: Bamboo Shoots: Yanxia:8# red

@@ -50,7 +50,7 @@ with ContextManager('data'):
     root.protocol('WM_DELETE_WINDOW', exit_gracefully)
     # root.wait_visibility(root)
     # root.attributes('-alpha', 0.6)
-    # root.wm_attributes('-transparentcolor', 'black')
+    root.wm_attributes('-transparentcolor', 'black')
     root.geometry('{}x{}+{}+{}'.format(int(fd['width']), fd['height'], fd['x'], fd['y']))
     # root.geometry('{}x{}+{}+{}'.format(600, fd['height'], fd['x'], fd['y']))
     app = MainWindow(root, bh)

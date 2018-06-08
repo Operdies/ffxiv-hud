@@ -2,7 +2,8 @@ from tkinter import StringVar, Button, Label
 
 
 class BotanistButton:
-    def __init__(self, master, et, settings):
+    def __init__(self, master, et, settings, outliner=None):
+        self.outliner = outliner
         self.settings = settings
         self.master = master
         self.et = et
@@ -56,8 +57,8 @@ class BotanistButton:
 
         print(self.settings['movable'])
 
-    def get_pos(self):
-        ele = self.master
+    def get_pos(self, ele=None):
+        ele = self.master if ele is None else ele
         return ele.winfo_x(), ele.winfo_y(), ele.winfo_height(), ele.winfo_width()
 
     def update(self):
@@ -65,5 +66,11 @@ class BotanistButton:
         cb()
         soon = ' in 00:' in text
         color = '#DD5500' if soon and self.highlight else '#000000'
-        self.button.config(bg=color, width=int(len(text) * 0.6))
-        self.text.set(text)
+        kwargs = {'bg':color}
+        if self.outliner is not None:
+            _, _, h, w = self.get_pos(self.button)
+            kwargs['image'] = self.outliner.outline(text, w, h)
+        else:
+            self.text.set(text)
+
+        self.button.config(**kwargs)

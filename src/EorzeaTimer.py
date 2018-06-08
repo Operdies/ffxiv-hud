@@ -1,6 +1,6 @@
 from tkinter import Frame
 from .Buttons import VentureButton, MuteButton, BotanistButton
-from .Utils import FileDict
+from .Utils import FileDict, Outliner
 from .Utils import WindowDraggaable
 
 
@@ -29,7 +29,7 @@ class MainWindow:
 
         self.ventures = [josuke, haurchefant]
         self.mute_button = MuteButton(master, et).mute_button
-        self.botanist_button = BotanistButton(master, et, FileDict('settings'))
+        self.botanist_button = BotanistButton(master, et, FileDict('settings'), outliner=Outliner())
         WindowDraggaable(self.botanist_button.button, master)
         self.updates = [v.update for v in self.ventures] + [self.botanist_button.update]
 
