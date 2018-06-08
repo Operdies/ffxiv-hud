@@ -67,7 +67,6 @@ with ContextManager('data'):
         app.update_loop()
         root.update_idletasks()
         root.update()
-        root.call('wm', 'attributes', '.', '-topmost', '1')
 
         # x_, y_ = root.winfo_x(), root.winfo_y()
         new = get_dims(root)
@@ -85,6 +84,8 @@ with ContextManager('data'):
                 except:
                     print('OBJECTION')
                     continue
+                    
+        root.call('wm', 'attributes', '.', '-topmost', '1')
 
         # if x_ != x or y_ != y:
         #    x = x_w
