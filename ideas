@@ -1,0 +1,35 @@
+up-arrow button to expand frame to window
+window could have tabs
+tabs:
+1. botanist gathering cycle with option to add or remove entry
+   a. x untracks entry and moves it to separate list
+   b. x in separate list removes permantently (with warning?)
+   c. v in separate list restores
+   d. cycle list could have x repeating entries if there aren't enough in a single day
+   e. cycle could expand and shrink according to size of window
+   f. '+' button to add new entries
+
+2. button above each element to toggle hide / show in minimal view
+
+data management:
+1. implement a database instead of pickling / unpickling dictionaries
+2. allow user to manage simple databases
+
+kinks:
+1. automatically expand / shrink bar width instead of truncating text
+2. allow resizing of minimized version (perhaps make a slim top-bar that is draggable and has resizing hooks)
+3. move mute button to maximized UI and remember mute state
+4. make left-clicks pass through botanist label after topbar is implemented (maybe this is could be perceived as botting idk)
+5. option to lock movement / resizing separately
+6. disable focus prevention when expanded
+
+graphics:
+1. support for adding graphics to buttons - design own graphics in photoshop
+2. bitmap implementation for outlined text and transparent background
+3. when highligt mode is enabled, don't use transparent background so the user doesn't place the bar over important elements
+
+QOL:
+1. support for specifying venture duration
+
+Program design:
+1. implement different button types as Widgets instead of just exposing tkinter elements

@@ -1,0 +1,2 @@
+playsound==1.2.2
+python_dateutil==2.7.3
