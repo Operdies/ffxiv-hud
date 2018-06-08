@@ -30,7 +30,7 @@ as the colors of the buttons, will also be customisable soon. Right-click to res
 
 
 ## Future stuff
-See ./ideas file for planned features. I do not intend to implement anything that could
+See ./ideas.md file for planned features. I do not intend to implement anything that could
 be perceived as cheating. This is only meant as a way to keep track of timers and information,
 especially while logged out. I only started working on this as a pet project to learn TKinter very recently,
 so stay tuned for updates.
