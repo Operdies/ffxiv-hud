@@ -34,8 +34,7 @@ class FileDict:
         It saves after 0.5 seconds to write consecutive changes in batch
         :return:
         """
-        self.saving = True
-        sleep(0.5)
+        sleep(1)
         print('saving changes to', self.name)
         with open(self.name, 'wb') as h:
             pickle.dump(self.dict, h, pickle.HIGHEST_PROTOCOL)
@@ -49,6 +48,7 @@ class FileDict:
     def __setitem__(self, key, value):
         self.dict[key] = value
         if not self.saving:
+            self.saving = True
             self.save_dict()
 
     def __repr__(self):

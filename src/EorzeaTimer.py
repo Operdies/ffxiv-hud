@@ -1,4 +1,3 @@
-from tkinter import Frame
 from .Buttons import VentureButton, MuteButton, BotanistButton
 from .Utils import FileDict, Outliner
 from .Utils import WindowDraggaable
@@ -12,15 +11,6 @@ class MainWindow:
 
         # self.w = Label(root, textvariable=self.text).pack(side='left')
         master.title('Eorzea Timers')
-        # frame = Frame(master,
-        #              highlightthickness=1,
-        #              bd=10,
-        #              takefocus=0,
-        #              width=80,
-        #              highlightcolor="#000000",
-        #              highlightbackground="#000000",)
-        # frame.pack(expand=True, fill='both', side='top')
-        # frame.config(bg='#000000')
         venture_dict = FileDict('venture', default=0)
         self.venture_dict = venture_dict
 

@@ -1,5 +1,4 @@
 import win32api
-from tkinter import *
 from PIL import Image, ImageFont, ImageDraw, ImageTk
 
 
