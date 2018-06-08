@@ -12,14 +12,11 @@ class VentureButton:
         self.text = StringVar()
         self.text.set(name)
         self.time = timedelta(hours=venture_length)
-        self.button = Button(master, height=2,
+        self.button = Button(master,
                              fg='#FFFFFF',
                              bg=bg,
                              width=12,
-                             # bd = 2,
                              highlightthickness=0,
-                             highlightcolor="#37d3ff",
-                             highlightbackground="#37d3ff",
                              command=self.start_timer,
                              textvariable=self.text,
                              borderwidth=0)

@@ -9,19 +9,11 @@ class BotanistButton:
         self.text = StringVar()
         self.highlight = settings['highlight'] if 'highlight' in settings else False
         self.et.highlight = self.highlight
-        self.button = Label(master, height=2,
+        self.button = Label(master,
                             fg='#FFFFFF',
                             bg='#000000',
-                            #justify='left',
-                            #anchor='n',
-                            #width=100,
-                            highlightthickness=0,
-                            highlightcolor="#37d3ff",
-                            highlightbackground="#37d3ff",
-                            # font='bold',
-                            # command=self.toggle_lock,
                             textvariable=self.text,
-                            borderwidth=2)
+                            borderwidth=0)
 
         self.button.bind('<Button-3>', self.toggle_highlight)
         self.init()
@@ -73,5 +65,5 @@ class BotanistButton:
         cb()
         soon = ' in 00:' in text
         color = '#DD5500' if soon and self.highlight else '#000000'
-        self.button.config(bg=color, width=int(len(text)*0.6))
+        self.button.config(bg=color, width=int(len(text) * 0.6))
         self.text.set(text)

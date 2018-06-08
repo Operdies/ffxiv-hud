@@ -45,5 +45,5 @@ class MainWindow:
 
         self.botanist_button.button.pack(side='left', **kwargs)
         for b in self.ventures:
-            b.button.pack(side='right')  # , **kwargs)
-        self.mute_button.pack(side='right')  # , **kwargs)
+            b.button.pack(side='right', fill='y')  # , **kwargs)
+        self.mute_button.pack(side='right', fill='y')  # , **kwargs)

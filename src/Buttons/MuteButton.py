@@ -10,7 +10,6 @@ class MuteButton:
                                   bg='#9ACD32',
                                   command=self.mute_sound,
                                   width=3,
-                                  height=2,
                                   borderwidth=0,
                                   #bd=2,
                                   padx=0,
