@@ -22,6 +22,9 @@ kinks:
 4. make left-clicks pass through botanist label after topbar is implemented (maybe this is could be perceived as botting idk)
 5. option to lock movement / resizing separately
 6. disable focus prevention when expanded
+7. program crashes when dragged outside the screen (when x or y coordinates become negative) --- fix this
+8. make mute state persistent
+9. more clever implementation of mute than changing "playing" flag perhaps
 
 graphics:
 1. support for adding graphics to buttons - design own graphics in photoshop
@@ -30,6 +33,9 @@ graphics:
 
 QOL:
 1. support for specifying venture duration
+2. support for specifying when the button should highlight / alert sound should play
+3. enable changing default and highlight color
+4. enable changing color of other buttons as well
 
 Program design:
 1. implement different button types as Widgets instead of just exposing tkinter elements

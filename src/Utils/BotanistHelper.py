@@ -57,7 +57,7 @@ class BotanistHelper:
     def play_alert(self):
         if not self.playing:
             self.playing = True
-            playsound('wednesday.wav')
+            playsound('alert.wav')
             self.playing = False
 
     def get_et(self):
