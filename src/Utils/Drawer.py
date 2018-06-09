@@ -4,7 +4,7 @@ from PIL import Image, ImageFont, ImageDraw, ImageTk
 
 class Outliner:
     def __init__(self):
-        self.photo = None
+        self.photo = None  # don't let the GC take you
         self.font = win32api.GetWindowsDirectory() + "\\Fonts\\ARIALBD.TTF"
         pointsize = 11
         self.font = ImageFont.truetype(self.font, pointsize)

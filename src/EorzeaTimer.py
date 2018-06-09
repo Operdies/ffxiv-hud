@@ -16,8 +16,8 @@ class MainWindow:
         venture_dict = FileDict('settings/venture', default=0)
         self.venture_dict = venture_dict
 
-        haurchefant = VentureButton(master, venture_dict, 'Haurchefant', bg='#0077EE')  # Teal
-        josuke = VentureButton(master, venture_dict, 'Josuke', bg='#4400BB')  # Purple
+        haurchefant = VentureButton(master, venture_dict, 'Haurchefant', Outliner(), bg='#0077EE')  # Teal
+        josuke = VentureButton(master, venture_dict, 'Josuke', Outliner(), bg='#4400BB')  # Purple
 
         self.ventures = [josuke, haurchefant]
         self.mute_button = MuteButton(master, et).mute_button

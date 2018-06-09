@@ -18,7 +18,8 @@ and updates automatically if the line parses correctly.
 
 I plan to enable easy editing of this in the GUI in a future release.
 
-Furthermore, right-clicking the text box toggles whether it should highlight when less than a minute remains.
+Furthermore, right-clicking the text box toggles whether it should highlight when less than a minute remains,
+and the bar can be dragged with left-click.
 
 ## Mute button
 A sound plays 30 seconds before the next node spawns if enabled.
