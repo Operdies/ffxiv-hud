@@ -6,17 +6,19 @@ class BotanistButton:
         self.outliner = outliner
         self.settings = settings
         self.master = master
+        self.previous_text = None
         self.et = et
         self.text = StringVar()
         self.highlight = settings['highlight'] if 'highlight' in settings else False
         self.et.highlight = self.highlight
-        self.button = Label(master,
-                            fg='#FFFFFF',
-                            bg='#000000',
-                            textvariable=self.text,
-                            borderwidth=0)
+        self.label = Label(master,
+                           fg='#FFFFFF',
+                           bg='#000000',
+                           width='300',
+                           textvariable=self.text,
+                           borderwidth=0)
 
-        self.button.bind('<Button-3>', self.toggle_highlight)
+        self.label.bind('<Button-3>', self.toggle_highlight)
         self.init()
 
     def toggle_highlight(self, e):
@@ -62,15 +64,16 @@ class BotanistButton:
         return ele.winfo_x(), ele.winfo_y(), ele.winfo_height(), ele.winfo_width()
 
     def update(self):
-        text, cb = self.et.report()
-        cb()
-        soon = ' in 00:' in text
-        color = '#DD5500' if soon and self.highlight else '#000000'
-        kwargs = {'bg':color}
-        if self.outliner is not None:
-            _, _, h, w = self.get_pos(self.button)
-            kwargs['image'] = self.outliner.outline(text, w, h)
-        else:
-            self.text.set(text)
+        text = self.et.report()
+        if text != self.previous_text:
+            soon = ' in 00:' in text
+            color = '#DD5500' if soon and self.highlight else '#000000'
+            kwargs = {'bg':color}
+            if self.outliner is not None:
+                _, _, h, w = self.get_pos(self.label)
+                kwargs['image'] = self.outliner.outline(text, w, h)
+            else:
+                self.text.set(text)
 
-        self.button.config(**kwargs)
+            self.label.config(**kwargs)
+        self.previous_text = text

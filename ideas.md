@@ -30,6 +30,7 @@
 * make mute state persistent
 * allow resizing of minimized version (perhaps make a slim top-bar that is draggable and has resizing hooks)
 * option to lock movement / resizing separately
+* lock-button could drag the window
 
 
 ## Project-stuff:
@@ -37,3 +38,4 @@
 * make everything neater and less shitty
 * Setup continous integration and change workflow to add new features through feature branches 
 * more clever implementation of mute than changing "playing" flag perhaps
+* organise data folder

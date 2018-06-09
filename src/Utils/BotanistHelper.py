@@ -20,7 +20,7 @@ def run_in_thread(fn):
 class BotanistHelper:
     def update_schedule(self, force=False):
         try:
-            comment_re = r'(^[^#]*)' # reads all characters until a # is encountered
+            comment_re = r'(^[^#]*)'  # reads all characters until a # is encountered
             change_time = os.stat(SCHEDULE_FILE).st_mtime
             if change_time != self.schedule_changed or force:
                 events = []
@@ -40,7 +40,7 @@ class BotanistHelper:
                 self.schedule_changed = change_time
                 events.sort(key=lambda x: x[0])
                 return events
-        except: # retry next tick because
+        except:  # retry next tick because
             pass
 
         return self.events
@@ -81,12 +81,11 @@ class BotanistHelper:
 
         # prior_area = slot
 
-        cb = lambda: None
         if "00:30" in next_event:
-            cb = self.play_alert
+            self.play_alert()
 
         time_text = '{} {}'.format(t % 12 if t % 12 is not 0 else 12, 'AM' if t < 12 else 'PM')
-        #event_string = " - Next event in {next_event} ({area} [{item}] - {tt}) - Current slot: {slot}  ".format(
+        # event_string = " - Next event in {next_event} ({area} [{item}] - {tt}) - Current slot: {slot}  ".format(
         event_string = " - {area} [{item}] - {tt} in {next_event} (slot {slot}) ".format(
             next_event=next_event, area=area, item=item, tt=time_text, slot=prior_area)
 
@@ -94,7 +93,7 @@ class BotanistHelper:
         if self.highlight:
             result = '>>' + result + '<<'
 
-        return result, cb
+        return result
 
     def time_to_time(self, hour):
         current = self.get_et()

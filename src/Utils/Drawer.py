@@ -15,7 +15,7 @@ class Outliner:
         text_x, text_y = font.getsize(text)
         x, y = (w - text_x) / 2, (h - text_y) / 2
         fillcolor = "white"
-        shadowcolor = "black"
+        shadowcolor = "#222222"
         draw = ImageDraw.Draw(im)
 
         # thin border

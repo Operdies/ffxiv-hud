@@ -15,7 +15,7 @@ class VentureButton:
         self.button = Button(master,
                              fg='#FFFFFF',
                              bg=bg,
-                             width=12,
+                             width=9,
                              highlightthickness=0,
                              command=self.start_timer,
                              textvariable=self.text,

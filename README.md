@@ -1,8 +1,12 @@
 # ffxiv-hud
 This is a simple overlay I use when playing FFXIV. It is intended to stay on top of all other programs,
-but never take focus from other windows.
+but never take focus. This is not a bot or cheating suite. It is just meant to show relevant information
+in a concise manner. How often do you tab out of the game to google something while playing an MMO?
+
+
 For now, it has limited features, but I plan to extend it whenever I have time.
-Currently, python is required to run it until I work out some kinks with PyInstaller, but this is not a priority.
+Currently, python is required to run it until I work out some kinks with PyInstaller, but this is not a priority
+at this stage since I develop it for personal use, and I extend it with features when I feel something is missing, or I am bored.
 
 
 # Current features:
@@ -17,9 +21,9 @@ I plan to enable easy editing of this in the GUI in a future release.
 Furthermore, right-clicking the text box toggles whether it should highlight when less than a minute remains.
 
 ## Mute button
-If enabled (green), a sound plays 30 seconds before the next node spawns. The sound played can
-be changed by changing the sound file in data/alert.wav
-If disabled (red), not sound plays. Click to toggle.
+A sound plays 30 seconds before the next node spawns if enabled.
+The alert sound can be changed by changing the sound file data/alert.wav
+Click to toggle.
 
 I have not tested this with anything but .wav files, but other filetypes might be supported. (I use the playsound module)
 

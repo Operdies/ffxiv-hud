@@ -33,7 +33,7 @@ def exit_gracefully():
 
 
 with ContextManager('data'):
-    fd = FileDict('time_data')
+    fd = FileDict('settings/time_data')
     # with open('eorzea_times.txt', 'r', encoding='ascii') as h:
     #    unix, dt, ratio = [str(line) for line in h.readlines()]
     #
@@ -84,7 +84,7 @@ with ContextManager('data'):
                 except:
                     print('OBJECTION')
                     continue
-                    
+
         root.call('wm', 'attributes', '.', '-topmost', '1')
 
         # if x_ != x or y_ != y:
