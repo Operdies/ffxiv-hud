@@ -20,7 +20,7 @@ class MainWindow:
         josuke = VentureButton(master, venture_dict, 'Josuke', Outliner(), bg='#4400BB')  # Purple
 
         self.ventures = [josuke, haurchefant]
-        self.mute_button = MuteButton(master, et).mute_button
+        self.mute_button = MuteButton(master, et, FileDict('settings/mute_state', default=False)).mute_button
         self.botanist_button = BotanistButton(master, et, FileDict('settings/settings'), outliner=Outliner())
         self.lock_image = ImageTk.PhotoImage(Image.open('icons/unlocked.png'))
         self.lock = Button(master,

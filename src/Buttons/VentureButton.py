@@ -1,6 +1,6 @@
 from tkinter import Button, StringVar, Menu, Label
 from datetime import timedelta
-from time import time
+from time import time, sleep
 import pickle
 
 
@@ -32,10 +32,10 @@ class VentureButton:
         self.venture_active = not self.venture_done()[0]
 
         self.init_context()
-        self.button_config(*self.venture_done())
+        # self.button_config(*self.venture_done())
 
-    def save_start(self):
-        self.fd[self.name] = self.venture_start
+    def save_start(self, reset=False):
+        self.fd[self.name] = 0 if reset else self.venture_start
 
     def init_context(self):
         rmenu = Menu(None, tearoff=0, takefocus=0)
@@ -50,13 +50,14 @@ class VentureButton:
     def start_timer(self, e=None):
         if not self.venture_active:
             self.venture_start = time()
-
+            self.time = timedelta(hours=1)
             self.venture_active = True
             self.save_start()
             # self.button.config(state="disabled")
 
     def cancel_venture(self, e):
-        self.button_config(done=True, remaining=None)
+        self.time = timedelta(0)
+        self.save_start(reset=True)
 
     def button_config(self, done, remaining):
         if done:
@@ -91,6 +92,6 @@ class VentureButton:
         return ele.winfo_x(), ele.winfo_y(), ele.winfo_height(), ele.winfo_width()
 
     def update(self):
-        if not self.venture_active:
-            return
+        #if not self.venture_active:
+            #return
         self.button_config(*self.venture_done())

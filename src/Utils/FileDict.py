@@ -35,7 +35,7 @@ class FileDict:
         :return:
         """
         sleep(1)
-        print('saving changes to', self.name)
+        # print('saving changes to', self.name)
         with open(self.name, 'wb') as h:
             pickle.dump(self.dict, h, pickle.HIGHEST_PROTOCOL)
         self.saving = False

@@ -48,7 +48,7 @@ with ContextManager('data'):
 
     root = Tk()
     root.protocol('WM_DELETE_WINDOW', exit_gracefully)
-    # root.wait_visibility(root)
+    root.wait_visibility(root)
     # root.attributes('-alpha', 0.6)
     root.wm_attributes('-transparentcolor', 'black')
     root.geometry('{}x{}+{}+{}'.format(int(fd['width']), fd['height'], fd['x'], fd['y']))
@@ -64,9 +64,10 @@ with ContextManager('data'):
         # print(own_hwnd)
         hwnd = win32gui.GetForegroundWindow()
 
-        app.update_loop()
         root.update_idletasks()
         root.update()
+        app.update_loop()
+
 
         # x_, y_ = root.winfo_x(), root.winfo_y()
         new = get_dims(root)

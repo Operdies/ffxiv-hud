@@ -3,11 +3,13 @@ from PIL import Image, ImageTk
 
 
 class MuteButton:
-    def __init__(self, master, et):
+    def __init__(self, master, et, mutefd):
+        self.mutefd = mutefd
         self.et = et
         self.button = Button
         self.mute_icon = ImageTk.PhotoImage(Image.open('icons/mute.png'))
         self.unmute_icon = ImageTk.PhotoImage(Image.open('icons/unmute.png'))
+        self.et.playing = not self.mutefd['muted'] # it is toggled in mute_sound
 
         self.mute_button = Label(master,
                                  fg='#000000',
@@ -28,3 +30,4 @@ class MuteButton:
         # self.mute_button.config(bg=color)
         self.mute_button.config(image=self.mute_icon if self.et.playing else self.unmute_icon)
         self.et.playing = not self.et.playing
+        self.mutefd['muted'] = self.et.playing
