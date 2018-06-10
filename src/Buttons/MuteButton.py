@@ -22,6 +22,7 @@ class MuteButton:
         self.mute_button.bind('<Button-1>', self.mute_sound)
 
     def mute_sound(self, e=None):
-        self.mute_button.config(image=self.mute_icon if self.et.playing else self.unmute_icon)
         self.et.playing = not self.et.playing
         self.mutefd['muted'] = self.et.playing
+        self.mute_button.config(image=self.mute_icon if self.et.playing else self.unmute_icon)
+
