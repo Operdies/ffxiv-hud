@@ -6,14 +6,14 @@
    * cycle list could have x repeating entries if there aren't enough in a single day
    * cycle could expand and shrink according to size of window
    * '+' button to add new entries
-* Optimistically add local text-based database of items and mobs
+
 
 * button above each element to toggle hide / show in minimal view
 
 ## data management:
 * implement a database instead of pickling / unpickling dictionaries
 * allow user to manage simple databases
-
+* Optimistically add local text-based database of items and mobs
 
 ## graphics:
 * support for adding graphics to buttons - design own graphics in photoshop
@@ -35,6 +35,7 @@
 * allow resizing of minimized version (perhaps make a slim top-bar that is draggable and has resizing hooks)
 * option to lock movement / resizing separately
 * lock-button could drag the window
+* support for airship stuff when I get to build those myself
 
 
 ## Project-stuff:
