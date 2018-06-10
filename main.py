@@ -6,16 +6,7 @@ import re
 import win32gui
 from collections import deque
 
-good_re = r'(\d+)x(\d+)\+(\d+)\+(\d+)'
-
 own_hwnd = None
-
-
-def get_dims(root):
-    keys = ['width', 'height', 'x', 'y']
-    whxy = re.findall(good_re, root.geometry())[0]
-
-    return dict(zip(keys, whxy))
 
 
 def enumHandler(hwnd, lParam):
@@ -33,16 +24,16 @@ def exit_gracefully():
 
 
 with ContextManager('data'):
-    fd = FileDict('settings/time_data')
     # with open('eorzea_times.txt', 'r', encoding='ascii') as h:
     #    unix, dt, ratio = [str(line) for line in h.readlines()]
     #
     # unix = float(unix.split(':')[1].strip())
     # dt = parse(dt.split(': ')[1].strip())
     # ratio = float(ratio.split(':')[1].strip())
-    unix = fd['unix']
-    dt = fd['dt']
-    ratio = fd['ratio']
+    with FileDict('settings/time_data') as fd:
+        unix = fd['unix']
+        dt = fd['dt']
+        ratio = fd['ratio']
 
     bh = BotanistHelper(unix, dt, ratio)
 
@@ -68,18 +59,14 @@ with ContextManager('data'):
         root.update()
         app.update_loop()
 
-
-        # x_, y_ = root.winfo_x(), root.winfo_y()
-        new = get_dims(root)
-        for key in new:
-            if fd[key] != new[key]:
-                fd[key] = new[key]
-
         if hwnd != own_hwnd:
             q.append(hwnd)
         if hwnd != own_hwnd and own_hwnd == win32gui.GetForegroundWindow():
             for h in reversed(q):
+                if h is 0:
+                    continue
                 try:
+                    print('restoring', h)
                     win32gui.SetForegroundWindow(h)
                     break
                 except:

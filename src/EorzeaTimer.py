@@ -29,7 +29,7 @@ class MainWindow:
                            borderwidth=0,
                            highlightcolor='#000000')
 
-        WindowDraggaable(self.botanist_button.label, master)
+        self.dragger = WindowDraggaable(self.botanist_button.label, master, FileDict('settings/time_data'))
         self.updates = [v.update for v in self.ventures] + [self.botanist_button.update]
 
         self.pack_buttons()

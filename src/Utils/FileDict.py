@@ -27,6 +27,12 @@ class FileDict:
         else:
             self.dict = {}
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
     @run_in_thread
     def save_dict(self):
         """
@@ -34,8 +40,7 @@ class FileDict:
         It saves after 0.5 seconds to write consecutive changes in batch
         :return:
         """
-        sleep(1)
-        # print('saving changes to', self.name)
+        print('saving changes to', self.name)
         with open(self.name, 'wb') as h:
             pickle.dump(self.dict, h, pickle.HIGHEST_PROTOCOL)
         self.saving = False
