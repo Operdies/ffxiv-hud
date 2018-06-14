@@ -1,4 +1,4 @@
-from .Buttons import VentureButton, MuteButton, BotanistButton
+from .Buttons import VentureButton, MuteButton, BotanistButton, GPButton
 from .Utils import FileDict, Outliner
 from .Utils import WindowDraggaable
 from tkinter import Button, PhotoImage
@@ -22,6 +22,7 @@ class MainWindow:
         self.ventures = [josuke, haurchefant]
         self.mute_button = MuteButton(master, et, FileDict('settings/mute_state', default=False)).mute_button
         self.botanist_button = BotanistButton(master, et, FileDict('settings/settings'), outliner=Outliner())
+        self.gpbutton = GPButton(master, outliner=Outliner())
         self.lock_image = ImageTk.PhotoImage(Image.open('icons/unlocked.png'))
         self.lock = Button(master,
                            image=self.lock_image,
@@ -30,7 +31,7 @@ class MainWindow:
                            highlightcolor='#000000')
 
         self.dragger = WindowDraggaable(self.botanist_button.label, master, FileDict('settings/time_data'))
-        self.updates = [v.update for v in self.ventures] + [self.botanist_button.update]
+        self.updates = [v.update for v in self.ventures] + [self.botanist_button.update] + [self.gpbutton.update]
 
         self.pack_buttons()
         # self.mute_button.pack_forget()
@@ -48,4 +49,5 @@ class MainWindow:
 
         self.mute_button.pack(side='right', fill='both', expand=True)  # , **kwargs)
         self.botanist_button.label.pack(side='right', **kwargs)
+        self.gpbutton.button.pack(side='right', **kwargs)
 

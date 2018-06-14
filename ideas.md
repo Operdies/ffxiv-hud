@@ -16,26 +16,30 @@
 * Optimistically add local text-based database of items and mobs
 
 ## graphics:
-* support for adding graphics to buttons - design own graphics in photoshop
+* support for adding own graphics to buttons - design own graphics in photoshop
 * rework mute button so mute / unmute are more uniform. Maybe just steal windows icon
 * enable changing default and highlight color
 * enable changing color of other buttons as well
 
-## QOL / features:
-* support for specifying venture duration 
-(context menu?)
-* support for specifying when the button should highlight / alert sound should play
-* support for adding alerts for ventures 
-(add more generic stock sound effects)
+## QOL:
+* specify when the button should highlight / alert sound should play
 * first-time setup instead of using my own settings lol 
 (default values in filedict?)
-* up-arrow button to expand frame to window
-* support for specifying the format string on botanist bar
-* quick notes (tab in full-size window with support to add rows from database?)
-* allow resizing of minimized version (perhaps make a slim top-bar that is draggable and has resizing hooks)
 * option to lock movement / resizing separately
-* lock-button could drag the window
+
+## features:
+* add alerts for ventures 
+(add more generic stock sound effects)
+* support for specifying venture duration 
+(context menu?)
+* GP bar / time to full - check whether 6gp per tick is unlocked
 * support for airship stuff when I get to build those myself
+* macro builder / parser + help with crafting rotation
+* allow resizing of minimized version (perhaps make a slim top-bar that is draggable and has resizing hooks)
+* quick notes (tab in full-size window with support to add rows from database?)
+* specify the format string on botanist bar
+* up-arrow button to expand frame to window with extended features / customisation
+* cactpot solver like https://ff14-cactpot.wotax.net/
 
 
 ## Project-stuff:

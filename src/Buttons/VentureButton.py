@@ -5,16 +5,18 @@ import pickle
 
 
 class VentureButton:
-    def __init__(self, master, fd, name, outliner, bg='#000000', venture_length=1):
+    def __init__(self, master, fd, name, outliner, bg='#000000'):
         self.outliner = outliner
         self.fd = fd
         self.bg = bg
+        self.venture_entry = name + '_venture_length'
+        self.duration = timedelta(hours=fd[self.venture_entry])
         self.master = master
         self.name = name
         self.text = StringVar()
         self.previous_text = None
         self.text.set(name)
-        self.time = timedelta(hours=venture_length)
+        self.time = timedelta(hours=fd[self.venture_entry])
         self.button = Label(master,
                             fg='#FFFFFF',
                             bg=bg,
@@ -26,7 +28,9 @@ class VentureButton:
 
         self.commands = [
             (name + ':', lambda: None),
-            (" Reset Timer", lambda: self.cancel_venture(None))
+            (" Reset Timer", lambda: self.cancel_venture(None)),
+            (" 1 hour venture", self.set_duration(1)),
+            ("18 hour venture", self.set_duration(18))
         ]
         self.venture_start = fd[name]
         self.venture_active = not self.venture_done()[0]
@@ -36,6 +40,13 @@ class VentureButton:
 
     def save_start(self, reset=False):
         self.fd[self.name] = 0 if reset else self.venture_start
+
+    def set_duration(self, value):
+        def new():
+            self.duration = timedelta(hours=value)
+            self.fd[self.venture_entry] = value
+
+        return new
 
     def init_context(self):
         rmenu = Menu(None, tearoff=0, takefocus=0)
@@ -50,7 +61,7 @@ class VentureButton:
     def start_timer(self, e=None):
         if not self.venture_active:
             self.venture_start = time()
-            self.time = timedelta(hours=1)
+            self.time = self.duration
             self.venture_active = True
             self.save_start()
             # self.button.config(state="disabled")

@@ -21,8 +21,8 @@ class BotanistHelper:
     def update_schedule(self, force=False):
         try:
             comment_re = r'(^[^#]*)'  # reads all characters until a # is encountered
-            change_time = os.stat(SCHEDULE_FILE).st_mtime
-            if change_time != self.schedule_changed or force:
+
+            if self.last_change_at_check != self.last_change or force:
                 events = []
                 with open(SCHEDULE_FILE, 'r', encoding='ascii') as h:
                     lines = h.readlines()
@@ -37,21 +37,24 @@ class BotanistHelper:
                     for time in times:
                         events += [(time, item, zone, slot)]
 
-                self.schedule_changed = change_time
+                self.last_change = self.last_change_at_check
                 events.sort(key=lambda x: x[0])
-                return events
-        except:  # retry next tick because
-            pass
-
-        return self.events
+                self.events = events
+                print(events)
+        except Exception as e:  # retry next tick because
+            print(e)
 
     def __init__(self, unix_time, dt, ratio):
+        self.highlight = False
         self.playing = False  # whether a sound is playing. prevents overlapping sounds
         self.unix_time = unix_time  # real life timestamp when measurement started
         self.dt = dt  # ingame datetime when measurement started
         self.ratio = ratio  # real seconds per ingame minute
-        self.schedule_changed = os.stat(SCHEDULE_FILE).st_mtime
-        self.events = self.update_schedule(force=True)
+        self.events = []
+        self.text = ''
+        self.last_change_at_check = os.stat(SCHEDULE_FILE).st_mtime
+        self.last_change = os.stat(SCHEDULE_FILE).st_mtime
+        self.update()
 
     @run_in_thread  # non-blocking calls, yo
     def play_alert(self):
@@ -60,26 +63,37 @@ class BotanistHelper:
             playsound('alert.wav')
             self.playing = False
 
+    @run_in_thread
+    def update(self):
+        print(os.listdir())
+        self.update_schedule(force=True)
+        while True:
+            self.last_change_at_check = os.stat(SCHEDULE_FILE).st_mtime
+            self.update_schedule()
+            self.set_text()
+            sleep(0.2)
+
     def get_et(self):
         elapsed = time() - self.unix_time
         seconds = int(60 * elapsed / self.ratio)
         current = self.dt + timedelta(seconds=seconds)
         return current
 
-    def report(self):
-        self.events = self.update_schedule()
-        current = self.get_et()
+    @run_in_thread
+    def set_text(self):
+        if not self.events:
+            self.text = ''
+            return
+        current_time = self.get_et()
         prior_area = self.events[-1][-1]
         for t, item, area, slot in self.events:
-            if t > current.hour:
+            if t > current_time.hour:
                 next_event = self.time_to_time(t)
                 break
             prior_area = slot
         else:
             t, item, area, slot = self.events[0]
             next_event = self.time_to_time(t)
-
-        # prior_area = slot
 
         if "00:30" in next_event:
             self.play_alert()
@@ -89,11 +103,14 @@ class BotanistHelper:
         event_string = " - {area} [{item}] - {tt} in {next_event} (slot {slot}) ".format(
             next_event=next_event, area=area, item=item, tt=time_text, slot=prior_area)
 
-        result = ' ' + current.strftime('%I:%M %p') + event_string
+        result = ' ' + current_time.strftime('%I:%M %p') + event_string
         if self.highlight:
             result = '>>' + result + '<<'
 
-        return result
+        self.text = result
+
+    def report(self):
+        return self.text
 
     def time_to_time(self, hour):
         current = self.get_et()

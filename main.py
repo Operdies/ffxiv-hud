@@ -1,13 +1,11 @@
-from dateutil.parser import parse
 from src import MainWindow, BotanistHelper
 from src import ContextManager, FileDict
 from tkinter import Tk
-import re
 import win32gui
-from collections import deque
+from time import sleep, time
 
 own_hwnd = None
-
+FPS = 250
 
 def enumHandler(hwnd, lParam):
     global own_hwnd
@@ -40,18 +38,17 @@ with ContextManager('data'):
     root = Tk()
     root.protocol('WM_DELETE_WINDOW', exit_gracefully)
     root.wait_visibility(root)
-    # root.attributes('-alpha', 0.6)
     root.wm_attributes('-transparentcolor', 'black')
     root.geometry('{}x{}+{}+{}'.format(int(fd['width']), fd['height'], fd['x'], fd['y']))
-    # root.geometry('{}x{}+{}+{}'.format(600, fd['height'], fd['x'], fd['y']))
     app = MainWindow(root, bh)
 
     win32gui.EnumWindows(enumHandler, None)
     # print(own_hwnd)
-    q = deque(maxlen=10)
+    # q = deque(maxlen=10)
+    prior_hwnd = None
     while True:
-
-        win32gui.EnumWindows(enumHandler, None)
+        start = time()
+        # win32gui.EnumWindows(enumHandler, None)
         # print(own_hwnd)
         hwnd = win32gui.GetForegroundWindow()
 
@@ -59,24 +56,18 @@ with ContextManager('data'):
         root.update()
         app.update_loop()
 
-        if hwnd != own_hwnd:
-            q.append(hwnd)
-        if hwnd != own_hwnd and own_hwnd == win32gui.GetForegroundWindow():
-            for h in reversed(q):
-                if h is 0:
-                    continue
-                try:
-                    print('restoring', h)
-                    win32gui.SetForegroundWindow(h)
-                    break
-                except:
-                    print('OBJECTION')
-                    continue
+        if hwnd != own_hwnd and hwnd is not  0:
+            prior_hwnd = hwnd
+
+        if prior_hwnd and own_hwnd == win32gui.GetForegroundWindow():
+            try:
+                win32gui.SetForegroundWindow(prior_hwnd)
+                print('restoring', prior_hwnd)
+            except :
+                pass
 
         root.call('wm', 'attributes', '.', '-topmost', '1')
-
-        # if x_ != x or y_ != y:
-        #    x = x_w
-        #    y = y_
-        #    fd['x'] = x
-        #    fd['y'] = y
+        sleep_time = 1 / FPS - (time() - start)
+        # sleep(max(1 / FPS - (time() - start), 0))
+        if sleep_time > 0:
+            sleep(sleep_time) # cap updates at FPS / sec

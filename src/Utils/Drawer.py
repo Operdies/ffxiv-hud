@@ -1,5 +1,8 @@
 import win32api
 from PIL import Image, ImageFont, ImageDraw, ImageTk
+from tkinter import Label
+import re
+import numpy as np
 
 
 class Outliner:
@@ -9,8 +12,18 @@ class Outliner:
         pointsize = 11
         self.font = ImageFont.truetype(self.font, pointsize)
 
-    def outline(self, text, w, h):
-        im = Image.new('RGBA', (w, h), (255, 255, 255, 0))
+    def outline(self, text, w, h, bg=None, bg_fraction=None):
+        if bg is not None:
+            bg_fraction = w if bg_fraction is None else bg_fraction
+            im = Image.new('RGBA', (w, h), bg)
+            arr = np.array(im)
+            x, y, z = arr.shape
+            bt=3
+            arr[bt:-bt, max(bt, int(y * bg_fraction)):-bt, :] = [0, 0, 0, 0]
+            im = Image.fromarray(arr)
+        else:
+            im = Image.new('RGBA', (w, h), (255, 255, 255, 0))
+
         font = self.font
         text_x, text_y = font.getsize(text)
         x, y = (w - text_x) / 2, (h - text_y) / 2
@@ -31,5 +44,6 @@ class Outliner:
         draw.text((x + 1, y + 1), text, font=font, fill=shadowcolor)
 
         draw.text((x, y), text, font=font, fill=fillcolor)
+
         self.photo = ImageTk.PhotoImage(im)
         return self.photo
