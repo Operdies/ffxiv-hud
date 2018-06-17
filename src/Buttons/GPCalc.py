@@ -3,20 +3,21 @@ from tkinter import Label, Menu, StringVar
 
 
 class GPButton:
-    def __init__(self, master, gpregen=6, max_gp=718, outliner=None):
+    def __init__(self, master, et, gpregen=6, max_gp=718, outliner=None):
         self.outliner = outliner
         self.max_gp = max_gp
-        self.gp_sec = gpregen / 3.356
+        self.gp_sec = gpregen / 3#.356
         self.start = time()
         self._gp = 700  # self.max_gp
         self.recent = None
         self.previous_text = None
         self.photo = None
-        self.button = Label(master,
+        self.button = Label(et.minimal_group,
                             fg='#FFFFFF',
                             bg='#000000',
                             # width=80 if self.outliner else 10,
-                            width=10,
+                            width=80,
+                            #height=12,
                             highlightthickness=0,
                             # command=self.start_timer,
                             # textvariable=self.text,
@@ -28,6 +29,7 @@ class GPButton:
         for i in range(0, max_gp, 100):
             self.commands += [(str(i), self.set_gp(i))]
         self.init_context()
+        et.updatees += [self.update ]
 
     @property
     def gp(self):

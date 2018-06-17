@@ -14,6 +14,7 @@
 * implement a database instead of pickling / unpickling dictionaries
 * allow user to manage simple databases
 * Optimistically add local text-based database of items and mobs
+* associate records with patch in case of changes
 
 ## graphics:
 * support for adding own graphics to buttons - design own graphics in photoshop

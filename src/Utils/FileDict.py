@@ -51,10 +51,11 @@ class FileDict:
         return self.default
 
     def __setitem__(self, key, value):
-        self.dict[key] = value
-        if not self.saving:
-            self.saving = True
-            self.save_dict()
+        if key not in self.dict or self.dict[key] != value:
+            self.dict[key] = value
+            if not self.saving:
+                self.saving = True
+                self.save_dict()
 
     def __repr__(self):
         return repr(self.dict)

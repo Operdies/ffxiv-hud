@@ -40,7 +40,6 @@ class BotanistHelper:
                 self.last_change = self.last_change_at_check
                 events.sort(key=lambda x: x[0])
                 self.events = events
-                print(events)
         except Exception as e:  # retry next tick because
             print(e)
 
@@ -60,12 +59,11 @@ class BotanistHelper:
     def play_alert(self):
         if not self.playing:
             self.playing = True
-            playsound('alert.wav')
+            playsound('sound/alert.wav')
             self.playing = False
 
     @run_in_thread
     def update(self):
-        print(os.listdir())
         self.update_schedule(force=True)
         while True:
             self.last_change_at_check = os.stat(SCHEDULE_FILE).st_mtime
