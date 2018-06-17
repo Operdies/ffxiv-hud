@@ -43,8 +43,11 @@ class Crawler:
             print(response.status)
             assert response.status == 200
             html = response.data
-            with open(save_path, 'w') as h:
-                h.write(str(html))
+            if response.status == 200:
+                with open(save_path, 'w') as h:
+                    h.write(str(html))
+            else:
+                return None
 
         return html
 
