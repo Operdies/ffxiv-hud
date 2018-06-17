@@ -1,4 +1,4 @@
-from .Buttons import VentureButton, MuteButton, BotanistButton, GPButton, Expand, ItemView
+from .Views import VentureButton, MuteButton, BotanistButton, GPButton, Expand, ItemView
 from .Database import Crawler
 from .Utils import FileDict, Outliner
 from .Utils import WindowDraggaable
@@ -14,7 +14,7 @@ class MainWindow:
     def __init__(self, master, botanist_helper, crawler, win32_enumhandler):
         self.master = master
         self.botanist_helper = botanist_helper
-        self.minimal_group = Frame(master, width=800, height=40)
+        self.minimal_group = Frame(master)#, width=800, height=40)
         self.large_view = Frame(master, style='alt.TFrame')  # , width=800, height='600')
 
         # self.w = Label(root, textvariable=self.text).pack(side='left')
@@ -45,9 +45,8 @@ class MainWindow:
                            highlightcolor='#000000')
 
         # self.dragger = WindowDraggaable(self.botanist_button.label, master)
-        self.pack_buttons()
         # self.mute_button.pack_forget()
-        self.toggle_large(True)
+        self.pack_buttons()
         self.itemview = ItemView(master, self, Crawler(), self.large_view, WindowDraggaable)
 
     def update_loop(self):
@@ -80,20 +79,8 @@ class MainWindow:
         Grid.rowconfigure(self.master, 0, weight=1)
         # Grid.rowconfigure(self.minimal_group, 1, weight=1)
 
+        self.large_view.grid(column=0, row=0, sticky='nsew')
+        self.large_view.rowconfigure(0, weight=1)
+
     def get_pos(self, ele):
         return ele.winfo_x(), ele.winfo_y(), ele.winfo_height(), ele.winfo_width()
-
-    def toggle_large(self, visible):
-        x, y, h, w = self.get_pos(self.master)
-        print('\n\n\n')
-        print(w, h, x, y)
-        if visible:
-            h = 600
-            w = 800
-            self.large_view.grid(column=0, row=0, sticky=N + S + E + W)
-            self.large_view.rowconfigure(0, weight=1)
-        else:
-            h = 100
-            print('deflating')
-            self.large_view.grid_forget()
-        self.master.geometry('{}x{}+{}+{}'.format(w, h, x, y))

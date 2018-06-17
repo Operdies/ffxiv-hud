@@ -23,6 +23,7 @@ class ItemView:
         self.wd = wd
         self.et = et
         self.text = StringVar()
+        self.text.set('Search GamerEscape here')
         self.master = master
         self.search_bar = self.make_searchfield()
         # frame.rowconfigure(0, weight=0)
@@ -31,10 +32,11 @@ class ItemView:
         self.frame.columnconfigure(5, weight=0)
         self.frame.rowconfigure(1, weight=1)
         text = ttk.Entry(self.frame,
-                         width=15,
+                         width=30,
                          textvariable=self.text)
         text.grid(column=entry_column, row=0, sticky=W)
         text.bind('<Return>', self.on_return)
+        text.bind('<Button-1>', self.on_click)
         top_bar = ttk.Frame(self.frame, width=100)
         top_bar.grid(column=0, row=0, columnspan=10, sticky=N + S + E + W)
         self.frame.columnconfigure(0, weight=1)
@@ -48,15 +50,26 @@ class ItemView:
         print(text)
         text = text.replace('\n', '')
         print('working on it...')
+        self.text.set('searching for {}...'.format(self.text.get()))
+
         self.get_tables(text)
+
+    def on_click(self, e):
+        self.search_bar.select_clear()
+        self.search_bar.select_range(0, 'end')
+        self.search_bar.focus()
+        return 'break'
 
     @run_in_thread
     def get_tables(self, text):
-        tables = self.db.get_tables(text)
+        tables, ret_code = self.db.get_tables(text)
 
         def callback():
-            self.create_table(tables[0], text)
-            print('done!')
+            if ret_code == 200:
+                self.create_table(tables[0], text)
+                self.text.set('done!')
+            else:
+                self.text.set('Something bad happend ({})'.format(ret_code))
 
         self.et.one_time_updates += [callback]
 

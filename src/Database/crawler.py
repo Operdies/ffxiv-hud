@@ -41,23 +41,26 @@ class Crawler:
         if os.path.exists(save_path):
             with open(save_path, 'r') as h:
                 html = h.read().replace('''\\n''', '')
+            retcode = 200
         else:
             url = 'https://ffxiv.gamerescape.com/wiki/' + name
             # url = '''https://ffxiv.gamerescape.com/w/index.php?title=Special%3ASearch&search={}&go=Go'''.format(quote(name))
             response = self.pm.request('GET', url)
+            retcode = response.status
             print(response.status)
-            assert response.status == 200
             html = response.data
-            if response.status == 200:
+            if retcode == 200:
                 with open(save_path, 'w') as h:
                     h.write(str(html))
             else:
-                return None
+                return None, retcode
         html = str(html).replace('''\\n''', '')
-        return html
+        return html, retcode
 
     def get_tables(self, name):
-        html = self.get_html(name)
+        html, retcode = self.get_html(name)
+        if retcode != 200:
+            return [], retcode
         soup = bs(html, 'html5lib')
         tables = soup.find_all(class_='mw-collapsible')
         results = []
@@ -67,4 +70,4 @@ class Crawler:
             data = parser.parse()
             results += [data]
 
-        return [result for result in results if result is not None]
+        return [result for result in results if result is not None], retcode
