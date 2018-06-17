@@ -1,16 +1,15 @@
 from src import MainWindow, BotanistHelper
 from src import ContextManager, FileDict
 from src.Database import Crawler
-from tkinter import Tk
+from tkinter import Tk, ttk
 import win32gui
 from time import sleep, time
 from collections import deque
+from src.styles import apply_styles
 
 own_hwnd = None
 FPS = 250
 
-dark_grey = '#313031'
-darker_grey = '#272627'
 
 def enum_handler(hwnd, lParam):
     global own_hwnd
@@ -29,6 +28,7 @@ def exit_gracefully():
 with ContextManager('data'):
     root = Tk()
     root.protocol('WM_DELETE_WINDOW', exit_gracefully)
+    apply_styles()
     # with open('eorzea_times.txt', 'r', encoding='ascii') as h:
     #    unix, dt, ratio = [str(line) for line in h.readlines()]
     #

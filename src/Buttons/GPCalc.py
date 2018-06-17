@@ -1,27 +1,32 @@
 from time import time
 from tkinter import Label, Menu, StringVar
+from tkinter.ttk import Label
 
 
 class GPButton:
     def __init__(self, master, et, gpregen=6, max_gp=718, outliner=None):
         self.outliner = outliner
         self.max_gp = max_gp
-        self.gp_sec = gpregen / 3#.356
+        self.gp_sec = gpregen / 3  # .356
         self.start = time()
         self._gp = 700  # self.max_gp
         self.recent = None
         self.previous_text = None
         self.photo = None
-        self.button = Label(et.minimal_group,
-                            fg='#FFFFFF',
-                            bg='#000000',
-                            # width=80 if self.outliner else 10,
-                            width=80,
-                            #height=12,
-                            highlightthickness=0,
-                            # command=self.start_timer,
-                            # textvariable=self.text,
-                            borderwidth=0)
+        self.button = Label(et.minimal_group)
+        self.height = 30
+        self.width = 90
+        # self.button = Label(et.minimal_group,
+        #                     fg='#FFFFFF',
+        #                     bg='#000000',
+        #                     # width=80 if self.outliner else 10,
+        #                     width=80,
+        #                     #height=12,
+        #                     highlightthickness=0,
+        #                     # command=self.start_timer,
+        #                     # textvariable=self.text,
+        #                     borderwidth=0)
+        #
 
         self.commands = [
             ('set gp >:]', lambda: None),
@@ -29,7 +34,7 @@ class GPButton:
         for i in range(0, max_gp, 100):
             self.commands += [(str(i), self.set_gp(i))]
         self.init_context()
-        et.updatees += [self.update ]
+        et.updatees += [self.update]
 
     @property
     def gp(self):
@@ -82,15 +87,15 @@ class GPButton:
     def update(self):
         current, remaining = self.get_gp()
         if remaining > 0:
-            text = '{} / {} ({})'.format(current, self.max_gp, remaining)
+            text = '({2}) {0} / {1}'.format(current, self.max_gp, remaining)
         else:
             text = str(self.max_gp)
         if text == self.previous_text:
             return
+        text += ' GP'
         self.previous_text = text
         # self.text.set(text)
 
         fraction = current / self.max_gp
-        _, _, h, w = self.get_pos(self.button)
-        self.photo = self.outliner.outline(text, w, h, bg=(255, 255, 0, 1), bg_fraction=fraction)
+        self.photo = self.outliner.outline(text, self.width, self.height, bg=(255, 255, 0, 1), bg_fraction=fraction)
         self.button.config(image=self.photo)

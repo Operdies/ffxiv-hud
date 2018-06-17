@@ -66,9 +66,12 @@ class BotanistHelper:
     def update(self):
         self.update_schedule(force=True)
         while True:
-            self.last_change_at_check = os.stat(SCHEDULE_FILE).st_mtime
-            self.update_schedule()
-            self.set_text()
+            try:
+                self.last_change_at_check = os.stat(SCHEDULE_FILE).st_mtime
+                self.update_schedule()
+                self.set_text()
+            except OSError:
+                pass
             sleep(0.2)
 
     def get_et(self):

@@ -27,11 +27,16 @@ class Crawler:
         if not os.path.exists(self.save_base):
             os.mkdir(self.save_base)
 
+    def capitalise_word(self, word):
+        uncapitalised_words = ['to', 'from', 'with', 'and', 'as', 'that', 'like']
+        word = word.lower()
+        word = word if word in uncapitalised_words else str.capitalize(word)
+        return word
+
     def get_html(self, name):
         name = name.strip()
-        name = name.title()
+        name = '_'.join([self.capitalise_word(word) for word in name.split(' ')])
         print(name)
-        name = name.replace(' ', '_')
         save_path = self.save_base + name + '.html'
         if os.path.exists(save_path):
             with open(save_path, 'r') as h:
@@ -48,7 +53,7 @@ class Crawler:
                     h.write(str(html))
             else:
                 return None
-
+        html = str(html).replace('''\\n''', '')
         return html
 
     def get_tables(self, name):
@@ -62,6 +67,4 @@ class Crawler:
             data = parser.parse()
             results += [data]
 
-        return results
-
-
+        return [result for result in results if result is not None]
