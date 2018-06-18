@@ -16,17 +16,6 @@ class GPButton:
         self.button = Label(et.minimal_group)
         self.height = 30
         self.width = 90
-        # self.button = Label(et.minimal_group,
-        #                     fg='#FFFFFF',
-        #                     bg='#000000',
-        #                     # width=80 if self.outliner else 10,
-        #                     width=80,
-        #                     #height=12,
-        #                     highlightthickness=0,
-        #                     # command=self.start_timer,
-        #                     # textvariable=self.text,
-        #                     borderwidth=0)
-        #
 
         self.commands = [
             ('set gp >:]', lambda: None),
@@ -73,9 +62,6 @@ class GPButton:
 
     def use_recent(self):
         self.recent() if self.recent is not None else None
-
-    def get_pos(self, ele):
-        return ele.winfo_x(), ele.winfo_y(), ele.winfo_height(), ele.winfo_width()
 
     def get_gp(self):
         elapsed = time() - self.start

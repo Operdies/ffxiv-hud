@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter.ttk import Label, Notebook, Frame
 import threading
 
 
@@ -26,15 +27,16 @@ class ItemView:
         self.text.set('Search GamerEscape here')
         self.master = master
         self.search_bar = self.make_searchfield()
+        self.et.one_time_updates += [lambda: self.get_tables('lightning shard')]
         # frame.rowconfigure(0, weight=0)
 
     def make_searchfield(self, entry_column=10):
         self.frame.columnconfigure(5, weight=0)
         self.frame.rowconfigure(1, weight=1)
         text = ttk.Entry(self.frame,
-                         width=30,
+                         width=50,
                          textvariable=self.text)
-        text.grid(column=entry_column, row=0, sticky=W)
+        text.grid(column=entry_column, row=0, sticky=W, padx=5, pady=5)
         text.bind('<Return>', self.on_return)
         text.bind('<Button-1>', self.on_click)
         top_bar = ttk.Frame(self.frame, width=100)
@@ -43,6 +45,7 @@ class ItemView:
         self.wd(top_bar, self.master)
         self.frame.columnconfigure(10, weight=0)
         self.frame.rowconfigure(0, weight=0)
+
         return text
 
     def on_return(self, e):
@@ -66,40 +69,42 @@ class ItemView:
 
         def callback():
             if ret_code == 200:
-                self.create_table(tables[0], text)
-                self.text.set('done!')
+                self.create_table(tables, text)
+                self.text.set('showing results for {}'.format(text))
             else:
                 self.text.set('Something bad happend ({})'.format(ret_code))
 
         self.et.one_time_updates += [callback]
 
-    def create_table(self, table, item):
-        start_column = 5
-        start_row = 5
+    def create_table(self, tables, item):
         for child in list(self.frame.winfo_children()):
             child.destroy()
-        kwargs = {'fg': 'white', 'bg': '#323435'}
-        key = list(table.keys())[0]
-        header = key
-        t = table[key]
-        num_columns = len(t.keys())
+
         self.search_bar = self.make_searchfield(entry_column=10)
+        nb = Notebook(self.frame)
+        nb.grid(column=0, row=1, columnspan=15, sticky='nw')
+        self.frame.columnconfigure(0, weight=1)
 
-        Label(master=self.frame, text=item.title(), **kwargs).grid(column=start_column, row=start_row - 2,
-                                                                   columnspan=len(t.keys()))
-        Label(master=self.frame, text=header, **kwargs).grid(column=start_column, row=start_row - 1,
-                                                             columnspan=len(t.keys()))
-        table_frame = Frame(self.frame)
-        # table = ttk.LabelFrame(column = )
+        for t in tables:
+            table_key = list(t.keys())[0]
+            t = t[table_key]
+            kwargs = {'style': 'table.TLabel'}
+            headerkwargs = {'style': 'header.TLabel'}
+            table_frame = Frame(nb)
+            nb.add(table_frame, text=table_key)
 
-        column = start_column
-        for key in t:
-            row = start_row
-            Label(master=self.frame, text=key, **kwargs).grid(column=column, row=row, sticky=W)
-            self.frame.columnconfigure(column, weight=1)
+            column = 0
+            for key in t:
+                if 'venture' in key.lower():
+                    name = ' '.join(key.split(' ')[2:4])
+                else:
+                    name = key
+                row = 0
+                Label(table_frame, text=name, **headerkwargs).grid(column=column, row=row, sticky='n')
+                table_frame.columnconfigure(column, weight=1)
 
-            for value in t[key]:
-                row += 1
-                Label(master=self.frame, text=value, **kwargs).grid(column=column, row=row, sticky=W)
-            print(column)
-            column += 1
+                for value in t[key]:
+                    row += 1
+                    Label(table_frame, text=value, **kwargs).grid(column=column, row=row)
+                # print(column)
+                column += 1

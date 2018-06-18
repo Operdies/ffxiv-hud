@@ -4,7 +4,7 @@
 #6:Trilium:East Shroud:?
 #2,14: Othard Plum:Azim:2# yellow
 #2, 14: Hingan Flux:The Peaks:4# high level crafting material
-2, 14: Hingan Flux:The Peaks:4# high level crafting material
+7, 20: Hingan Flux:The Peaks:4# fake one
 #4,16:Ginger:Lochs:3# yellow
 #6,18: Beech Branch:Fringes:0# red
 #6,18:Torreya Log:Lochs:6#yellow

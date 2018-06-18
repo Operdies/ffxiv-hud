@@ -45,7 +45,6 @@ class BotanistHelper:
 
     def __init__(self, unix_time, dt, ratio):
         self.highlight = False
-        self.playing = False  # whether a sound is playing. prevents overlapping sounds
         self.unix_time = unix_time  # real life timestamp when measurement started
         self.dt = dt  # ingame datetime when measurement started
         self.ratio = ratio  # real seconds per ingame minute
@@ -57,10 +56,7 @@ class BotanistHelper:
 
     @run_in_thread  # non-blocking calls, yo
     def play_alert(self):
-        if not self.playing:
-            self.playing = True
-            playsound('sound/alert.wav')
-            self.playing = False
+        playsound('sound/alert.wav')
 
     @run_in_thread
     def update(self):
@@ -95,9 +91,6 @@ class BotanistHelper:
         else:
             t, item, area, slot = self.events[0]
             next_event = self.time_to_time(t)
-
-        if "00:30" in next_event:
-            self.play_alert()
 
         time_text = '{} {}'.format(t % 12 if t % 12 is not 0 else 12, 'AM' if t < 12 else 'PM')
         # event_string = " - Next event in {next_event} ({area} [{item}] - {tt}) - Current slot: {slot}  ".format(

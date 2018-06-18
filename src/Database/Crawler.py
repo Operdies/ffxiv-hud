@@ -5,7 +5,7 @@ import numpy as np
 from bs4 import BeautifulSoup as bs
 import re
 import os
-from .gamerescape_parser import Parser
+from .GamerEscapeParser import Parser, append_dict
 
 BASE = 'https://ffxiv.gamerescape.com/wiki/'
 
@@ -57,6 +57,29 @@ class Crawler:
         html = str(html).replace('''\\n''', '')
         return html, retcode
 
+    def merge_ventures(self, tables):
+        new_table = []
+        venture_table = []
+        empty = True
+        for t in tables:
+            key = list(t.keys())[0]
+            if 'venture' in key.lower():
+                venture_table += [t]
+                empty = False
+            else:
+                new_table += [t]
+
+        venture_dict = {}
+        for d in venture_table:
+            for k in d:
+                venture_dict[k] = d[k][list(d[k].keys())[0]]
+
+        venture_dict = {'Venture': venture_dict}
+        # print(venture_dict)
+        # print(new_table)
+
+        return new_table if empty else new_table + [venture_dict]
+
     def get_tables(self, name):
         html, retcode = self.get_html(name)
         if retcode != 200:
@@ -70,4 +93,9 @@ class Crawler:
             data = parser.parse()
             results += [data]
 
-        return [result for result in results if result is not None], retcode
+        results = [result for result in results if result is not None]
+        # print(results)
+        results = self.merge_ventures(results)
+        # print(results)
+
+        return results, retcode

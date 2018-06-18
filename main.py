@@ -5,7 +5,7 @@ from tkinter import Tk, ttk
 import win32gui
 from time import sleep, time
 from collections import deque
-from src.styles import apply_styles
+from src.Styles import apply_styles
 
 own_hwnd = None
 FPS = 250
@@ -44,7 +44,7 @@ with ContextManager('data'):
     botanist_helper = BotanistHelper(unix, dt, ratio)
     crawler = Crawler()
     root.wait_visibility(root)
-    root.geometry('{}x{}+{}+{}'.format(640, 400, 500, 500))
+    root.geometry('{}x{}+{}+{}'.format(666, 400, 500, 500))
     app = MainWindow(root, botanist_helper, crawler, lambda: win32gui.EnumWindows(enum_handler, None))
     app.update_loop()  # initialise stuff before gui is shown
     win32gui.EnumWindows(enum_handler, None)
