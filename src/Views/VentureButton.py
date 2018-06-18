@@ -1,4 +1,5 @@
 from tkinter import Button, StringVar, Menu, Label
+from tkinter.ttk import Label, Style
 from datetime import timedelta
 from time import time, sleep
 import pickle
@@ -13,18 +14,25 @@ class VentureButton:
         self.duration = timedelta(hours=fd[self.venture_entry])
         self.master = master
         self.name = name
+        self.width = 80
+        self.height = 30
+        style = Style()
+        self.soon_style = name + '.TLabel'
+        style.configure(self.soon_style, background=bg)
         self.text = StringVar()
         self.previous_text = None
         self.text.set(name)
         self.time = timedelta(hours=fd[self.venture_entry])
-        self.button = Label(et.minimal_group,
-                            fg='#FFFFFF',
-                            bg=bg,
-                            width=80 if self.outliner else 12,
-                            highlightthickness=0,
-                            # command=self.start_timer,
-                            # textvariable=self.text,
-                            borderwidth=0)
+        self.button = Label(et.minimal_group)
+        # self.button = Label(et.minimal_group,
+        #                     fg='#FFFFFF',
+        #                     bg=bg,
+        #                     width=80 if self.outliner else 12,
+        #                     highlightthickness=0,
+        #                     # command=self.start_timer,
+        #                     # textvariable=self.text,
+        #                     borderwidth=0)
+        #
 
         self.commands = [
             (name + ':', lambda: None),
@@ -81,15 +89,17 @@ class VentureButton:
             return
         # print('Updating text for {}'.format(self.name))
 
-        kwargs = {'bg': color}
+        # kwargs = {'bg': color}
+        kwargs = {}
         if self.outliner is not None:
             _, _, h, w = self.get_pos(self.button)
-            kwargs['image'] = self.outliner.outline(text, w, h)
+            kwargs['image'] = self.outliner.outline(text, self.width, self.height)
         else:
             self.text.set('  ' + text + '  ')
 
         self.previous_text = text
         self.button.config(**kwargs)
+        self.button.configure(style=self.soon_style if done else 'TLabel')
 
     def venture_done(self):
         elapsed = time() - self.venture_start

@@ -1,11 +1,10 @@
-"""
-pls
-"""
 from urllib.request import quote, unquote
 import unicodedata
 import re
 
 DEBUG = False
+
+PLACEHOLDER = {'this': ['just', 'text'], 'is': ['placeholder', 'sorry']}
 
 
 def debug_print(*args, **kwargs):
@@ -20,10 +19,11 @@ def sanitize_string(text):
 
 def append_dict(small, big):
     for key in small:
+        val = small[key]
         if key not in big:
-            big[key] = [small[key]]
+            big[key] = [val]
         else:
-            big[key] += [small[key]]
+            big[key] += [val]
 
 
 class Parser:
@@ -72,28 +72,53 @@ class Parser:
     def desynthesis(tds):
         headers = Parser.get_headers(tds[0])
         debug_print(headers)
+        return PLACEHOLDER
         # raise NotImplementedError
 
     @staticmethod
     def used_recipes(tds):
         headers = Parser.get_headers(tds[0])
         debug_print(headers)
+        return PLACEHOLDER
         # raise NotImplementedError
 
     @staticmethod
     def used_quest(tds):
         headers = Parser.get_headers(tds[0])
         debug_print(headers)
+        return PLACEHOLDER
         # raise NotImplementedError
 
     @staticmethod
     def used_leve(tds):
         headers = Parser.get_headers(tds[0])
         debug_print(headers)
+        return PLACEHOLDER
         # raise NotImplementedError
 
     @staticmethod
+    def harvest(tds):
+        headers = Parser.get_headers(tds[0])
+        rows = {}
+        table_rows = tds[0].table.tbody.find_all('tr')
+
+        for row in table_rows[1:]:
+            valid = True
+            row_dict = {}
+            for h, c in zip(headers, row.children):
+                text = sanitize_string(c.small.text).replace(')', ') ').replace(':', ': ')
+                if '<img alt' in text:
+                    text = ' '.join([q for q in c.small.stripped_strings if not '<img' in q])
+                row_dict[h] = text
+            if valid:
+                append_dict(row_dict, rows)
+
+        debug_print(rows)
+        return rows
+
+    @staticmethod
     def recipes(tds):
+        return PLACEHOLDER
         headers = Parser.get_headers(tds[0])
         debug_print(headers)
         # print(items)
@@ -108,13 +133,16 @@ class Parser:
         self.table = table
         self.parse_dict = {
             'sold by merchant': self.parse_merchant,
-            # 'harvesting': self.harvest,
-            # 'traded by merchant': self.parse_merchant,
-            # 'desynthesis': self.desynthesis,
-            # 'recipes using': self.used_recipes,
-            # 'used in quest': self.used_quest,
-            # 'used in levequest': self.used_leve,
-            # 'recipes': self.recipes,
+            'venture': self.parse_merchant,
+            'harvesting': self.harvest,
+            'logging': self.harvest,
+            'mining': self.harvest,
+            'traded by merchant': self.parse_merchant,
+            'desynthesis': self.desynthesis,
+            'recipes using': self.used_recipes,
+            'used in quest': self.used_quest,
+            'used in levequest': self.used_leve,
+            'recipes': self.recipes,
 
         }
 
@@ -127,14 +155,19 @@ class Parser:
         parse_key = str(title).lower().strip()
         result_table = {}
 
-        for key in self.parse_dict:
-            if key in parse_key:
-                # try:
+        if 'venture' in parse_key:
+            result = self.parse_merchant(tds)
+            if len(result.keys()) > 0:
+                # print(title)
+                result_table[true_key] = result
 
-                result = self.parse_dict[key](tds)
-                if len(result.keys()) > 0:
-                    # print(title)
-                    result_table[true_key] = result
+        else:
+            for key in self.parse_dict:
+                if key in parse_key:
+                    result = self.parse_dict[key](tds)
+                    if len(result.keys()) > 0:
+                        # print(title)
+                        result_table[true_key] = result
 
         if len(result_table.keys()) > 0:
             # print(result_table)

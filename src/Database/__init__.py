@@ -1,2 +1,2 @@
-from .crawler import Crawler
-from .gamerescape_parser import Parser
+from .Crawler import Crawler
+from .GamerEscapeParser import Parser

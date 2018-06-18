@@ -1,4 +1,5 @@
 from tkinter import StringVar, Button, Label
+from tkinter.ttk import Label, Button
 
 
 class Expand:
@@ -8,24 +9,16 @@ class Expand:
         self.small = not settings['movable']
         self.text = StringVar()
         self.et = et
-        self.button = Button(et.minimal_group,
-                             bg='gray',
-                             command=self.toggle_lock,
-                             textvariable=self.text,
-                             )
+        # self.button = Button(et.minimal_group,
+        #                      bg='gray',
+        #                      command=self.toggle_lock,
+        #                      textvariable=self.text,
+        #                      )
+        self.button = Button(et.minimal_group, textvariable=self.text, command=self.toggle_lock)
         self.settings = settings
-        # self.init()
-        self.toggle_lock()
-        self.toggle_lock()
+        self.update()
 
         # et.updatees += [self.win32_enumhandler]
-
-    def init(self):
-        override = 1 if self.settings['movable'] else 0
-        # override = 0
-        self.master.overrideredirect(override)
-        x, y, _, _ = self.get_pos()
-        self.update(first=True)
 
     def get_pos(self, ele=None):
         ele = self.master if ele is None else ele
@@ -41,20 +34,14 @@ class Expand:
 
         self.master.geometry("+{}+{}".format(x + delta_x, y + delta_y))
 
-    def toggle_lock(self):
+    def toggle_lock(self, e=None):
         self.settings['movable'] = not self.settings['movable']
         override = 1 if self.settings['movable'] else 0
         self.master.overrideredirect(override)
         self.update()
         self.nudge()
         self.small = not self.small
-        # if not self.small:
-        #     self.master.call('wm', 'attributes', '.', '-topmost', '1')
-        # else:
-        #     self.master.call('wm', 'attributes', '.', '-topmost', '0')
 
     def update(self, first=False):
         self.win32_enumhandler()
         self.text.set('^' if self.small else 'v')
-        # if not first:
-        #     self.et.toggle_large(visible=not self.small)
