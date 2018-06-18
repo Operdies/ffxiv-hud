@@ -1,6 +1,11 @@
 from tkinter import *
 from tkinter import ttk
+<< << << < HEAD
 from tkinter.ttk import Label, Notebook, Frame, Separator
+== == == =
+from tkinter.ttk import Label, Notebook, Frame
+>> >> >> > 44334
+c116c3d3c9df58c1aa1ec927a32ce923a64
 import threading
 
 
