@@ -27,9 +27,6 @@ class Expand:
 
     def set_override(self):
         override = 0 if self.settings['movable'] else 1
-        print(override)
-        print(self.big)
-        print(self.settings['movable'])
         self.master.overrideredirect(override)
 
     def nudge(self):

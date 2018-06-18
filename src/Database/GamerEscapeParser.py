@@ -1,6 +1,7 @@
 from urllib.request import quote, unquote
 import unicodedata
 import re
+import string
 
 DEBUG = False
 
@@ -14,6 +15,7 @@ def debug_print(*args, **kwargs):
 
 def sanitize_string(text):
     text = str(text)
+    text = re.sub(r'\\x\w*', '', text)
     return unicodedata.normalize('NFKC', text).replace('\\', '')
 
 
@@ -108,7 +110,7 @@ class Parser:
             for h, c in zip(headers, row.children):
                 text = sanitize_string(c.small.text).replace(')', ') ').replace(':', ': ')
                 if '<img alt' in text:
-                    text = ' '.join([q for q in c.small.stripped_strings if not '<img' in q])
+                    text = sanitize_string(' '.join([q for q in c.small.stripped_strings if not '<img' in q]))
                 row_dict[h] = text
             if valid:
                 append_dict(row_dict, rows)

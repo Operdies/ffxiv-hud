@@ -27,7 +27,8 @@ class Crawler:
         if not os.path.exists(self.save_base):
             os.mkdir(self.save_base)
 
-    def capitalise_word(self, word):
+    @staticmethod
+    def capitalise_word(word):
         uncapitalised_words = ['to', 'from', 'with', 'and', 'as', 'that', 'like']
         word = word.lower()
         word = word if word in uncapitalised_words else str.capitalize(word)
@@ -35,7 +36,7 @@ class Crawler:
 
     def get_html(self, name):
         name = name.strip()
-        name = '_'.join([self.capitalise_word(word) for word in name.split(' ')])
+        name = '_'.join([Crawler.capitalise_word(word) for word in name.split(' ')])
         print(name)
         url_name = quote(name)
         print(name)

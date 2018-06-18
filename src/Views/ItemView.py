@@ -28,7 +28,7 @@ class ItemView:
         self.text.set('Search GamerEscape here')
         self.master = master
         self.search_bar = self.make_searchfield()
-        # self.et.one_time_updates += [lambda: self.get_tables('lightning shard')]
+        self.et.one_time_updates += [lambda: self.get_tables('hingan flax')]
         # frame.rowconfigure(0, weight=0)
         self.et.updatees += [self.check_focus]
 
