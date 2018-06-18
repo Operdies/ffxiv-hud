@@ -111,6 +111,11 @@ class Parser:
                 text = sanitize_string(c.small.text).replace(')', ') ').replace(':', ': ')
                 if '<img alt' in text:
                     text = sanitize_string(' '.join([q for q in c.small.stripped_strings if not '<img' in q]))
+
+                text = text.replace('Tome of', '\nTome of')
+                text = text.replace('Unspoiled', ' - Unspoiled - ')
+                text = text.replace('Ephemeral', ' - Ephemeral - ')
+
                 row_dict[h] = text
             if valid:
                 append_dict(row_dict, rows)

@@ -50,3 +50,4 @@
 * Setup continous integration and change workflow to add new features through feature branches 
 * more clever implementation of mute than changing "playing" flag perhaps 
 (current solution may be fine if we add a mutex lock)
+

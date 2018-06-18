@@ -9,7 +9,7 @@ def apply_styles():
     styles.configure('TFrame', background=darker_grey, padx=10)
     styles.configure('alt.TFrame', background=dark_grey)
     styles.configure('TEntry', foreground='black')
-    styles.configure('TLabel', background=darker_grey, foreground='white')
+    styles.configure('TLabel', background=darker_grey, foreground='white', anchor='center')
     styles.configure('header.TLabel',
                      background=darker_grey,
                      foreground='white',
@@ -25,4 +25,4 @@ def apply_styles():
                      anchor='center',
                      foreground="white",
                      highlightbackground='white')
-    styles.configure('TNotebook', background=darker_grey, bd=1, highlightbackground=dark_grey)
+    styles.configure('TNotebook', background=darker_grey, bd=1, highlightbackground='red', highlightcolor='red')

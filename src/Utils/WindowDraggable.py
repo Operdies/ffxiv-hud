@@ -20,7 +20,7 @@ class WindowDraggaable:
         return dict(zip(keys, whxy))
 
     def start_move(self, e):
-        self.x = e.x + 63 # hack value to offset GP bar
+        self.x = e.x  # hack value to offset GP bar
         self.y = e.y
 
     def stop_move(self, e):
@@ -28,8 +28,6 @@ class WindowDraggaable:
         self.y = None
 
     def on_motion(self, e):
-        x = (e.x_root - self.x)
-        y = (e.y_root - self.y)
-
-        if x > 0 and y > 0:  # and self.move:
-            self.master.geometry("+{}+{}".format(x, y))
+        x = max((e.x_root - self.x), 0)
+        y = max((e.y_root - self.y), 0)
+        self.master.geometry("+{}+{}".format(x, y))

@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Text, StringVar, HORIZONTAL, VERTICAL
 from tkinter import ttk
 from tkinter.ttk import Label, Notebook, Frame, Separator
 import threading
@@ -28,7 +28,7 @@ class ItemView:
         self.text.set('Search GamerEscape here')
         self.master = master
         self.search_bar = self.make_searchfield()
-        # self.et.one_time_updates += [lambda: self.get_tables('hingan flax')]
+        self.et.one_time_updates += [lambda: self.get_tables('hingan flax')]
         self.et.updatees += [self.check_focus]
 
     def make_searchfield(self, entry_column=10):
@@ -37,11 +37,11 @@ class ItemView:
         text = ttk.Entry(self.frame,
                          width=50,
                          textvariable=self.text)
-        text.grid(column=entry_column, row=0, sticky=W, padx=5, pady=5)
+        text.grid(column=entry_column, row=0, sticky='w', padx=5, pady=5)
         text.bind('<Return>', self.on_return)
         text.bind('<Button-1>', self.on_click)
         top_bar = ttk.Frame(self.frame, width=100)
-        top_bar.grid(column=0, row=0, columnspan=10, sticky=N + S + E + W)
+        top_bar.grid(column=0, row=0, columnspan=10, sticky='nsew')
         self.frame.columnconfigure(0, weight=1)
         self.wd(top_bar, self.master)
         self.frame.columnconfigure(10, weight=0)
@@ -98,10 +98,11 @@ class ItemView:
             table_key = list(t)[0]
             t = t[table_key]
             table_frame = Frame(nb)
-            nb.add(table_frame, text=table_key)
+            nb.add(table_frame, text=table_key, sticky='nsew')
             self.create_column(t, table_frame)
 
-    def create_column(self, table, table_frame):
+    @staticmethod
+    def create_column(table, table_frame):
         kwargs = {'style': 'table.TLabel'}
         headerkwargs = {'style': 'header.TLabel'}
 
