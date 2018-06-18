@@ -1,30 +1,39 @@
 from tkinter import StringVar, Button, Label
 from tkinter.ttk import Label, Button
+from PIL import Image, ImageTk
 
 
 class Expand:
     def __init__(self, master, et, settings, win32_enumhandler):
         self.win32_enumhandler = win32_enumhandler
         self.master = master
-        self.big = not settings['movable']
+        self.borders_icon = ImageTk.PhotoImage(Image.open('icons/retract.png'))
+        self.no_borders_icon = ImageTk.PhotoImage(Image.open('icons/expand.png'))
+        self.big = settings['movable']
         self.text = StringVar()
         self.et = et
-        self.button = Button(et.minimal_group, textvariable=self.text, command=self.toggle_lock)
+        self.button = Label(et.minimal_group, image=self.get_icon())
+        self.button.bind('<Button-1>', self.toggle_lock)
         self.settings = settings
-        # self.update()
         self.et.one_time_updates += [self.update]
         # et.updatees += [self.win32_enumhandler]
+
+    def get_icon(self):
+        return self.borders_icon if self.big else self.no_borders_icon
 
     def get_pos(self, ele=None):
         ele = self.master if ele is None else ele
         return ele.winfo_x(), ele.winfo_y(), ele.winfo_height(), ele.winfo_width()
 
     def set_override(self):
-        override = 1 if self.settings['movable'] else 0
+        override = 0 if self.settings['movable'] else 1
+        print(override)
+        print(self.big)
+        print(self.settings['movable'])
         self.master.overrideredirect(override)
 
     def nudge(self):
-        direction = 'up' if self.settings['movable'] else 'down'
+        direction = 'down' if self.settings['movable'] else 'up'
         delta_y = 32
         delta_x = 8
         x, y, _, _ = self.get_pos()
@@ -35,11 +44,11 @@ class Expand:
 
     def toggle_lock(self, e=None):
         self.settings['movable'] = not self.settings['movable']
+        self.big = self.settings['movable']
         self.update()
         self.nudge()
-        self.big = not self.big
 
     def update(self, first=False):
         self.win32_enumhandler()
-        self.text.set('^' if self.big else 'v')
+        self.button.configure(image=self.get_icon())
         self.set_override()

@@ -64,7 +64,7 @@ class MainWindow:
             b.button.grid(column=i, row=row, **kwargs)  # , padx=small_pad)
             i += 2
 
-        self.expander.button.grid(column=11, row=row, sticky='esn')
+        self.expander.button.grid(column=11, row=row, sticky='esn', padx=(0, 10))
         # for i in range(2, 13, 2):
         #     Separator(self.minimal_group, orient=VERTICAL).grid(row=row, column=i, sticky='ns')
 
