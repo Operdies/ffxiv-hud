@@ -5,6 +5,13 @@ from PIL import Image, ImageTk
 
 class Expand:
     def __init__(self, master, et, settings, win32_enumhandler):
+        """
+
+        :param master:
+        :param et:
+        :param settings:
+        :param win32_enumhandler:
+        """
         self.win32_enumhandler = win32_enumhandler
         self.master = master
         self.borders_icon = ImageTk.PhotoImage(Image.open('icons/retract.png'))
@@ -14,6 +21,7 @@ class Expand:
         self.et = et
         self.button = Label(et.minimal_group, image=self.get_icon())
         self.button.bind('<Button-1>', self.toggle_lock)
+        self.button.bind('<Button-3>', self.resize_toggle)
         self.settings = settings
         self.et.one_time_updates += [self.update]
         # et.updatees += [self.win32_enumhandler]
@@ -21,8 +29,8 @@ class Expand:
     def get_icon(self):
         return self.borders_icon if self.big else self.no_borders_icon
 
-    def get_pos(self, ele=None):
-        ele = self.master if ele is None else ele
+    def get_pos(self):
+        ele = self.master
         return ele.winfo_x(), ele.winfo_y(), ele.winfo_height(), ele.winfo_width()
 
     def set_override(self):
@@ -30,6 +38,11 @@ class Expand:
         self.master.overrideredirect(override)
 
     def nudge(self):
+        """
+        set_override toggles window borders, but the window is anchored by its topleft corner
+        when the border is removed we therefore need to adjust the window position as to not nudge
+        the window slightly when toggling. A more apt name for this function would be prevent-nudge
+        """
         direction = 'down' if self.settings['movable'] else 'up'
         delta_y = 32
         delta_x = 8
@@ -44,6 +57,15 @@ class Expand:
         self.big = self.settings['movable']
         self.update()
         self.nudge()
+
+    def resize_toggle(self, e=None):
+        if self.big:
+            height = 20
+        else:
+            height = 600
+
+        self.et.set_height(height)
+        self.toggle_lock()
 
     def update(self, first=False):
         self.win32_enumhandler()

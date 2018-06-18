@@ -79,15 +79,13 @@ class VentureButton:
             # if done == True:
             #    self.button.config(bg=)
             return
-        # print('Updating text for {}'.format(self.name))
 
-        # kwargs = {'bg': color}
         kwargs = {}
         if self.outliner is not None:
             _, _, h, w = self.get_pos(self.button)
             kwargs['image'] = self.outliner.outline(text, self.width, self.height)
         else:
-            self.text.set('  ' + text + '  ')
+            self.text.set(text)
 
         self.previous_text = text
         self.button.config(**kwargs)

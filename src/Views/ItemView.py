@@ -43,7 +43,7 @@ class ItemView:
         top_bar = ttk.Frame(self.frame, width=100)
         top_bar.grid(column=0, row=0, columnspan=10, sticky='nsew')
         self.frame.columnconfigure(0, weight=1)
-        self.wd(top_bar, self.master)
+        self.wd(top_bar, self.master, self.et)
         self.frame.columnconfigure(10, weight=0)
         self.frame.rowconfigure(0, weight=0)
 
@@ -119,7 +119,7 @@ class ItemView:
 
             for value in table[key]:
                 row += 2
-                Label(table_frame, text=value, **kwargs).grid(column=column, row=row)
+                Label(table_frame, text=value, **kwargs).grid(column=column, row=row, sticky='w')
 
             column += 2
 

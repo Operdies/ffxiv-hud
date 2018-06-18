@@ -1,8 +1,9 @@
 import re
 
 
-class WindowDraggaable:
-    def __init__(self, label, master):
+class WindowDraggable:
+    def __init__(self, label, master, et):
+        self.et = et
         self.master = master
         self.label = label
         self.x = None
@@ -30,4 +31,7 @@ class WindowDraggaable:
     def on_motion(self, e):
         x = max((e.x_root - self.x), 0)
         y = max((e.y_root - self.y), 0)
+        if self.et.expander.big:
+            x -= 8
+            y -= 32
         self.master.geometry("+{}+{}".format(x, y))

@@ -1,9 +1,9 @@
 from .Views import VentureButton, MuteButton, BotanistButton, GPButton, Expand, ItemView
 from .Database import Crawler
 from .Utils import FileDict, Outliner
-from .Utils import WindowDraggaable
+from .Utils import WindowDraggable
 from tkinter import Button, PhotoImage, Frame, Grid, N, S, E, W, VERTICAL
-from tkinter.ttk import Frame, Separator
+from tkinter.ttk import Frame, Separator  # , Button
 from PIL import Image, ImageTk
 import re
 from time import sleep
@@ -42,7 +42,7 @@ class MainWindow:
                            highlightcolor='#000000')
 
         self.pack_buttons()
-        self.itemview = ItemView(master, self, Crawler(), self.large_view, WindowDraggaable)
+        self.itemview = ItemView(master, self, Crawler(), self.large_view, WindowDraggable)
 
     def update_loop(self):
         for update in self.updatees:
@@ -52,21 +52,32 @@ class MainWindow:
             func = self.one_time_updates.pop()
             func()
 
+    def get_pos(self):
+        ele = self.master
+        return ele.winfo_x(), ele.winfo_y(), ele.winfo_height(), ele.winfo_width()
+
+    def set_height(self, val):
+        x, y, h, w = self.get_pos()
+        y = max(y + (h - val), 40)  # adjust for the new height so the bottom of the frame is the same
+        # also make sure the top frame doesn't leave the screen
+        self.master.geometry('{}x{}+{}+{}'.format(w, val, x, y))
+
     def pack_buttons(self):
-        kwargs = {'sticky': 'nsew', 'padx':10}
+        kwargs = {'sticky': 'nsew'}
         row = 10
 
-        self.botanist_button.label.grid(column=1, row=row, **kwargs)
-        self.gpbutton.button.grid(column=3, row=row, sticky='nsew')  # , padx=small_pad)
-        self.mute_button.grid(column=5, row=row, **kwargs)
+        self.botanist_button.label.grid(column=1, row=row, **kwargs, padx=5)
+        self.gpbutton.button.grid(column=3, row=row, sticky='nsew', padx=5)  # , padx=small_pad)
+        self.mute_button.grid(column=5, row=row, **kwargs, padx=5)
         i = 7
         for b in self.ventures:
             b.button.grid(column=i, row=row, **kwargs)  # , padx=small_pad)
             i += 2
 
         self.expander.button.grid(column=11, row=row, sticky='esn', padx=5)
-        # for i in range(2, 13, 2):
-        #     Separator(self.minimal_group, orient=VERTICAL).grid(row=row, column=i, sticky='ns')
+
+        # for i in range(4, 11, 2):
+        #     Separator(self.minimal_group, orient=VERTICAL).grid(row=row, column=i, sticky='ns', padx=(2,3))
 
         self.minimal_group.grid(column=0, row=1, sticky='sew')
         Grid.columnconfigure(self.master, 0, weight=1)
