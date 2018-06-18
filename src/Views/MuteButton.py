@@ -13,11 +13,14 @@ class MuteButton:
         self.mute_icon = ImageTk.PhotoImage(Image.open('icons/mute.png'))
         self.unmute_icon = ImageTk.PhotoImage(Image.open('icons/unmute.png'))
         self.mute_button = Label(et.minimal_group,
-                                 image=self.mute_icon if not self.settings['muted'] else self.unmute_icon,
+                                 image=self.get_icon(),
                                  style='mute.TLabel')
 
         self.mute_button.bind('<Button-1>', self.mute_sound)
 
+    def get_icon(self):
+        return self.mute_icon if not self.settings['muted'] else self.unmute_icon
+
     def mute_sound(self, e=None):
         self.settings['muted'] = not self.settings['muted']
-        self.mute_button.config(image=self.mute_icon if self.settings['muted'] else self.unmute_icon)
+        self.mute_button.config(image=self.get_icon())

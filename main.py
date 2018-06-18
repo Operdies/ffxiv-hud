@@ -25,6 +25,15 @@ def exit_gracefully():
     exit(0)
 
 
+def should_unfocus(prior_hwnd, own_hwnd, app):
+    if prior_hwnd == 0:
+        return False
+    focused = own_hwnd == win32gui.GetForegroundWindow()
+    borderless = not app.expander.big
+    text_entry_active = app.itemview.entry_focused
+    return focused and borderless and not text_entry_active
+
+
 with ContextManager('data'):
     root = Tk()
     root.protocol('WM_DELETE_WINDOW', exit_gracefully)
@@ -66,7 +75,7 @@ with ContextManager('data'):
             prior_hwnd = hwnd
             q.append(hwnd)
 
-        if not app.expander.small and (prior_hwnd and own_hwnd == win32gui.GetForegroundWindow()):
+        if should_unfocus(prior_hwnd, own_hwnd, app):
             for ele in q:
                 try:
                     win32gui.SetForegroundWindow(ele)

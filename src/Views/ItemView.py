@@ -18,17 +18,19 @@ class ItemView:
         # styles = ttk.Style()
         # styles.configure('TopBar.TFrame', background='#202223')
         # styles.configure('SearchBar.TEntry', foreground='black')
-
+        self.entry_focused = False
         self.frame = frame
         self.db = db
         self.wd = wd
         self.et = et
+        self.nb = None
         self.text = StringVar()
         self.text.set('Search GamerEscape here')
         self.master = master
         self.search_bar = self.make_searchfield()
-        self.et.one_time_updates += [lambda: self.get_tables('lightning shard')]
+        # self.et.one_time_updates += [lambda: self.get_tables('lightning shard')]
         # frame.rowconfigure(0, weight=0)
+        self.et.updatees += [self.check_focus]
 
     def make_searchfield(self, entry_column=10):
         self.frame.columnconfigure(5, weight=0)
@@ -61,7 +63,12 @@ class ItemView:
         self.search_bar.select_clear()
         self.search_bar.select_range(0, 'end')
         self.search_bar.focus()
+        self.entry_focused = True
         return 'break'
+
+    def check_focus(self):
+        focus = str(self.search_bar.focus_get())
+        self.entry_focused = 'entry' in focus.lower()
 
     @run_in_thread
     def get_tables(self, text):
@@ -77,12 +84,15 @@ class ItemView:
         self.et.one_time_updates += [callback]
 
     def create_table(self, tables, item):
-        for child in list(self.frame.winfo_children()):
-            child.destroy()
-
-        self.search_bar = self.make_searchfield(entry_column=10)
+        # for child in list(self.frame.winfo_children()):
+        #     child.destroy()
+        #
+        # self.search_bar = self.make_searchfield(entry_column=10)
+        if self.nb is not None:
+            self.nb.destroy()
         nb = Notebook(self.frame)
-        nb.grid(column=0, row=1, columnspan=15, sticky='nsew')
+        self.nb = nb
+        nb.grid(column=0, row=1, columnspan=15, sticky='ne', padx=10, pady=10)
         self.frame.columnconfigure(0, weight=1)
 
         for t in tables:
@@ -113,7 +123,7 @@ class ItemView:
 
             column += 2
 
-        padding = 2
+        padding = 0
         for i in range(2, row + padding, 2):
             Separator(table_frame, orient=HORIZONTAL).grid(row=i, column=0, columnspan=column + 1, sticky='ew')
 

@@ -2,8 +2,8 @@ from .Views import VentureButton, MuteButton, BotanistButton, GPButton, Expand, 
 from .Database import Crawler
 from .Utils import FileDict, Outliner
 from .Utils import WindowDraggaable
-from tkinter import Button, PhotoImage, Frame, Grid, N, S, E, W
-from tkinter.ttk import Frame
+from tkinter import Button, PhotoImage, Frame, Grid, N, S, E, W, VERTICAL
+from tkinter.ttk import Frame, Separator
 from PIL import Image, ImageTk
 import re
 from time import sleep
@@ -53,23 +53,26 @@ class MainWindow:
             func()
 
     def pack_buttons(self):
-        kwargs = {'sticky': N + S + E + W}
-        self.expander.button.grid(column=80, row=10, sticky=E + S + N)
-        self.gpbutton.button.grid(column=2, row=10, sticky=W + N + S + E)  # , padx=small_pad)
-        i = 5
-        for b in self.ventures:
-            b.button.grid(column=i, row=10, **kwargs)  # , padx=small_pad)
-            i += 1
-        self.mute_button.grid(column=4, row=10, **kwargs)
-        self.botanist_button.label.grid(column=1, row=10, **kwargs, padx=5)
-        self.minimal_group.grid(column=0, row=1, sticky=S + E + W)
+        kwargs = {'sticky': 'nsew'}
+        row = 10
 
+        self.botanist_button.label.grid(column=1, row=row, **kwargs, padx=5)
+        self.gpbutton.button.grid(column=3, row=row, sticky='nsew')  # , padx=small_pad)
+        self.mute_button.grid(column=5, row=row, **kwargs)
+        i = 7
+        for b in self.ventures:
+            b.button.grid(column=i, row=row, **kwargs)  # , padx=small_pad)
+            i += 2
+
+        self.expander.button.grid(column=11, row=row, sticky='esn')
+        # for i in range(2, 13, 2):
+        #     Separator(self.minimal_group, orient=VERTICAL).grid(row=row, column=i, sticky='ns')
+
+        self.minimal_group.grid(column=0, row=1, sticky='sew')
         Grid.columnconfigure(self.master, 0, weight=1)
         self.minimal_group.columnconfigure(4, weight=0)
-
         Grid.columnconfigure(self.minimal_group, 4, weight=0)
         Grid.columnconfigure(self.minimal_group, 1, weight=1)
         Grid.rowconfigure(self.master, 0, weight=1)
-
         self.large_view.grid(column=0, row=0, sticky='nsew')
         self.large_view.rowconfigure(0, weight=1)

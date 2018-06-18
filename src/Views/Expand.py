@@ -6,23 +6,22 @@ class Expand:
     def __init__(self, master, et, settings, win32_enumhandler):
         self.win32_enumhandler = win32_enumhandler
         self.master = master
-        self.small = not settings['movable']
+        self.big = not settings['movable']
         self.text = StringVar()
         self.et = et
-        # self.button = Button(et.minimal_group,
-        #                      bg='gray',
-        #                      command=self.toggle_lock,
-        #                      textvariable=self.text,
-        #                      )
         self.button = Button(et.minimal_group, textvariable=self.text, command=self.toggle_lock)
         self.settings = settings
-        self.update()
-
+        # self.update()
+        self.et.one_time_updates += [self.update]
         # et.updatees += [self.win32_enumhandler]
 
     def get_pos(self, ele=None):
         ele = self.master if ele is None else ele
         return ele.winfo_x(), ele.winfo_y(), ele.winfo_height(), ele.winfo_width()
+
+    def set_override(self):
+        override = 1 if self.settings['movable'] else 0
+        self.master.overrideredirect(override)
 
     def nudge(self):
         direction = 'up' if self.settings['movable'] else 'down'
@@ -36,12 +35,11 @@ class Expand:
 
     def toggle_lock(self, e=None):
         self.settings['movable'] = not self.settings['movable']
-        override = 1 if self.settings['movable'] else 0
-        self.master.overrideredirect(override)
         self.update()
         self.nudge()
-        self.small = not self.small
+        self.big = not self.big
 
     def update(self, first=False):
         self.win32_enumhandler()
-        self.text.set('^' if self.small else 'v')
+        self.text.set('^' if self.big else 'v')
+        self.set_override()

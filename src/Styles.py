@@ -25,4 +25,4 @@ def apply_styles():
                      anchor='center',
                      foreground="white",
                      highlightbackground='white')
-    styles.configure('TNotebook', background=darker_grey)
+    styles.configure('TNotebook', background=darker_grey, bd=1, highlightbackground=dark_grey)
