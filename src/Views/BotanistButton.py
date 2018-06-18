@@ -4,6 +4,7 @@ from tkinter.ttk import Label, Style
 
 class BotanistButton:
     def __init__(self, master, botanisthelper, et, settings, outliner=None):
+        outliner = None
         self.outliner = outliner
         self.settings = settings
         self.master = master
@@ -18,7 +19,7 @@ class BotanistButton:
         self.botanisthelper.highlight = self.highlight
         self.width = 400
         self.height = 30
-        self.label = Label(et.minimal_group)
+        self.label = Label(et.minimal_group, textvariable=self.text)
 
         self.label.bind('<Button-3>', self.toggle_highlight)
         et.updatees += [self.update]

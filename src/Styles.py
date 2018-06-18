@@ -9,7 +9,7 @@ def apply_styles():
     styles.configure('TFrame', background=darker_grey, padx=10)
     styles.configure('alt.TFrame', background=dark_grey)
     styles.configure('TEntry', foreground='black')
-    styles.configure('TLabel', background=darker_grey)
+    styles.configure('TLabel', background=darker_grey, foreground='white')
     styles.configure('header.TLabel',
                      background=darker_grey,
                      foreground='white',

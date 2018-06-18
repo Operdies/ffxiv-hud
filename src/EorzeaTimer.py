@@ -53,10 +53,10 @@ class MainWindow:
             func()
 
     def pack_buttons(self):
-        kwargs = {'sticky': 'nsew'}
+        kwargs = {'sticky': 'nsew', 'padx':10}
         row = 10
 
-        self.botanist_button.label.grid(column=1, row=row, **kwargs, padx=5)
+        self.botanist_button.label.grid(column=1, row=row, **kwargs)
         self.gpbutton.button.grid(column=3, row=row, sticky='nsew')  # , padx=small_pad)
         self.mute_button.grid(column=5, row=row, **kwargs)
         i = 7
@@ -64,7 +64,7 @@ class MainWindow:
             b.button.grid(column=i, row=row, **kwargs)  # , padx=small_pad)
             i += 2
 
-        self.expander.button.grid(column=11, row=row, sticky='esn', padx=(0, 10))
+        self.expander.button.grid(column=11, row=row, sticky='esn', padx=5)
         # for i in range(2, 13, 2):
         #     Separator(self.minimal_group, orient=VERTICAL).grid(row=row, column=i, sticky='ns')
 

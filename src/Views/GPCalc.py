@@ -5,6 +5,7 @@ from tkinter.ttk import Label
 
 class GPButton:
     def __init__(self, master, et, gpregen=6, max_gp=718, outliner=None):
+        self.text = StringVar()
         self.outliner = outliner
         self.max_gp = max_gp
         self.gp_sec = gpregen / 3  # .356
@@ -13,7 +14,7 @@ class GPButton:
         self.recent = None
         self.previous_text = None
         self.photo = None
-        self.button = Label(et.minimal_group)
+        self.button = Label(et.minimal_group, textvariable=self.text)
         self.height = 30
         self.width = 90
 
@@ -31,7 +32,11 @@ class GPButton:
 
     @gp.setter
     def gp(self, value):
-        if 0 <= value <= self.max_gp:
+        if value <= 0:
+            self._gp = 0
+        elif value >= self.max_gp:
+            self._gp = self.max_gp
+        else:
             self._gp = value
 
     def init_context(self):
@@ -78,10 +83,10 @@ class GPButton:
             text = str(self.max_gp)
         if text == self.previous_text:
             return
-        text += ' GP'
         self.previous_text = text
-        # self.text.set(text)
+        text += ' GP'
+        self.text.set(text)
 
         fraction = current / self.max_gp
-        self.photo = self.outliner.outline(text, self.width, self.height, bg=(255, 255, 0, 1), bg_fraction=fraction)
-        self.button.config(image=self.photo)
+        # self.photo = self.outliner.outline(text, self.width, self.height, bg=(255, 255, 0, 1), bg_fraction=fraction)
+        # self.button.config(image=self.photo)

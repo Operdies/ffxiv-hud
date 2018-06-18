@@ -1,5 +1,8 @@
-pywin32==223
 playsound==1.2.2
+urllib3==1.22
+numpy==1.14.2
+certifi==2017.11.5
+pywin32==223
 Pillow==5.1.0
-python_dateutil==2.7.3
+beautifulsoup4==4.6.0
 win32gui==221.6

@@ -12,7 +12,7 @@ class Outliner:
         pointsize = 11
         self.font = ImageFont.truetype(self.font, pointsize)
 
-    def outline(self, text, w, h, bg=None, bg_fraction=None, center=True):
+    def outline(self, text, w, h, bg=None, bg_fraction=None, center=False):
         if bg is not None:
             bg_fraction = w if bg_fraction is None else bg_fraction
             im = Image.new('RGBA', (w, h), bg)
@@ -31,6 +31,7 @@ class Outliner:
         else:
             x = 5
         y = (h - text_y) / 2
+
         fillcolor = "white"
         shadowcolor = "#222222"
         draw = ImageDraw.Draw(im)
@@ -42,11 +43,11 @@ class Outliner:
         # draw.text((x, y + 1), text, font=font, fill=shadowcolor)  #
 
         # thicker border
-        draw.text((x - 1, y - 1), text, font=font, fill=shadowcolor)
-        draw.text((x + 1, y - 1), text, font=font, fill=shadowcolor)
-        draw.text((x - 1, y + 1), text, font=font, fill=shadowcolor)
-        draw.text((x + 1, y + 1), text, font=font, fill=shadowcolor)
-
+        # draw.text((x - 1, y - 1), text, font=font, fill=shadowcolor)
+        # draw.text((x + 1, y - 1), text, font=font, fill=shadowcolor)
+        # draw.text((x - 1, y + 1), text, font=font, fill=shadowcolor)
+        # draw.text((x + 1, y + 1), text, font=font, fill=shadowcolor)
+        #
         draw.text((x, y), text, font=font, fill=fillcolor)
 
         self.photo = ImageTk.PhotoImage(im)

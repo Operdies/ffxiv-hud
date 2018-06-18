@@ -7,6 +7,7 @@ import pickle
 
 class VentureButton:
     def __init__(self, master, et, fd, name, outliner, bg='#000000'):
+        outliner = None
         self.outliner = outliner
         self.fd = fd
         self.bg = bg
@@ -23,16 +24,7 @@ class VentureButton:
         self.previous_text = None
         self.text.set(name)
         self.time = timedelta(hours=fd[self.venture_entry])
-        self.button = Label(et.minimal_group)
-        # self.button = Label(et.minimal_group,
-        #                     fg='#FFFFFF',
-        #                     bg=bg,
-        #                     width=80 if self.outliner else 12,
-        #                     highlightthickness=0,
-        #                     # command=self.start_timer,
-        #                     # textvariable=self.text,
-        #                     borderwidth=0)
-        #
+        self.button = Label(et.minimal_group, textvariable=self.text)
 
         self.commands = [
             (name + ':', lambda: None),
