@@ -35,6 +35,8 @@
 * quick notes (tab in full-size window with support to add rows from database?)
 * specify the format string on botanist bar
 * cactpot solver like https://ff14-cactpot.wotax.net/
+* cancel current search (GO button that changes icon and functionality based on state?)
+* discord-like icons on left side of window to switch between windows
 
 
 ## Project-stuff:

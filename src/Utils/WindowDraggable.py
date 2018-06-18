@@ -13,15 +13,8 @@ class WindowDraggable:
         label.bind('<ButtonRelease-1>', self.stop_move)
         label.bind('<B1-Motion>', self.on_motion)
 
-    def get_dims(self, ele):
-        good_re = r'(\d+)x(\d+)\+(\d+)\+(\d+)'
-        keys = ['width', 'height', 'x', 'y']
-        whxy = re.findall(good_re, self.master.geometry())[0]
-
-        return dict(zip(keys, whxy))
-
     def start_move(self, e):
-        self.x = e.x  # hack value to offset GP bar
+        self.x = e.x
         self.y = e.y
 
     def stop_move(self, e):
