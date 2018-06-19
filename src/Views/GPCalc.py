@@ -49,21 +49,21 @@ class GPButton:
 
         rmenu.entryconfigure(0, state='disabled', activebackground='#DDDDDD')
         self.button.bind("<Button-3>", lambda b: rmenu.tk_popup(b.x_root + 40, b.y_root + 10, entry="0"))
-        self.button.bind('<Button-1>', lambda b: self.use_recent())
+        # self.button.bind('<Button-1>', lambda b: self.use_recent())
         self.button.bind('<MouseWheel>', self.on_scroll)
 
     def on_scroll(self, event):
         delta = event.delta
         sign = 1 if delta > 0 else -1
-        gp, _ = self.get_gp()
-        self.gp = gp + sign * 10
-        self.start = time()
+        # gp, _ = self.get_gp()
+        self.max_gp = self.max_gp + sign# * 10
+        # self.start = time()
 
     def set_gp(self, value):
         def new():
-            self.start = time()
-            self.gp = value
-            self.recent = new
+            # self.start = time()
+            self.max_gp = value
+            # self.recent = new
 
         return new
 
