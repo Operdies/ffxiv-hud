@@ -69,5 +69,6 @@ class Expand:
 
     def update(self, first=False):
         self.win32_enumhandler()
+        self.et.updatees += [self.win32_enumhandler]
         self.button.configure(image=self.get_icon())
         self.set_override()

@@ -4,11 +4,12 @@ from tkinter.ttk import Label
 
 
 class GPButton:
-    def __init__(self, master, et, gpregen=6, max_gp=718, outliner=None):
+    def __init__(self, master, et, gpregen=6, max_gp=718, outliner=None, reader=None):
+        self.reader = reader
         self.text = StringVar()
         self.outliner = outliner
         self.max_gp = max_gp
-        self.gp_sec = gpregen / 3  # .356
+        self.gp_sec = gpregen / 3#.356
         self.start = time()
         self._gp = 700  # self.max_gp
         self.recent = None
@@ -38,6 +39,7 @@ class GPButton:
             self._gp = self.max_gp
         else:
             self._gp = value
+        self.start = time()
 
     def init_context(self):
         rmenu = Menu(None, tearoff=0, takefocus=0)
@@ -76,7 +78,13 @@ class GPButton:
         return current_gp, time_remaining
 
     def update(self):
+        if self.reader is not None:
+            gp = self.reader.get_gp()
+            self.gp = gp
+
         current, remaining = self.get_gp()
+        current = self.gp
+
         if remaining > 0:
             text = '({2}) {0} / {1}'.format(current, self.max_gp, remaining)
         else:
@@ -87,6 +95,6 @@ class GPButton:
         text += ' GP'
         self.text.set(text)
 
-        fraction = current / self.max_gp
+        # fraction = current / self.max_gp
         # self.photo = self.outliner.outline(text, self.width, self.height, bg=(255, 255, 0, 1), bg_fraction=fraction)
         # self.button.config(image=self.photo)

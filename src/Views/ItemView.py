@@ -114,18 +114,18 @@ class ItemView:
             else:
                 name = key
             row = 1
-            Label(table_frame, text=name, **headerkwargs).grid(column=column, row=row, sticky='n')
+            Label(table_frame, text=name, **headerkwargs).grid(column=column, row=row, sticky='n', padx=1, pady=1)
             table_frame.columnconfigure(column, weight=1)
 
             for value in table[key]:
                 row += 2
-                Label(table_frame, text=value, **kwargs).grid(column=column, row=row, sticky='w')
+                Label(table_frame, text=value, **kwargs).grid(column=column, row=row, sticky='w', padx=1, pady=1)
 
             column += 2
 
-        padding = 0
+        padding = 2
         for i in range(2, row + padding, 2):
             Separator(table_frame, orient=HORIZONTAL).grid(row=i, column=0, columnspan=column + 1, sticky='ew')
 
-        for j in range(2, column + padding, 2):
+        for j in range(2, column, 2):
             Separator(table_frame, orient=VERTICAL).grid(row=0, column=j, rowspan=row + 1, sticky='ns')

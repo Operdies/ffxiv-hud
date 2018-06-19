@@ -1,7 +1,7 @@
 from .Views import VentureButton, MuteButton, BotanistButton, GPButton, Expand, ItemView
 from .Database import Crawler
 from .Utils import FileDict, Outliner
-from .Utils import WindowDraggable
+from .Utils import WindowDraggable, Reader
 from tkinter import Button, PhotoImage, Frame, Grid, N, S, E, W, VERTICAL
 from tkinter.ttk import Frame, Separator  # , Button
 from PIL import Image, ImageTk
@@ -32,7 +32,7 @@ class MainWindow:
         self.settings_fd = settings_fd
         self.botanist_button = BotanistButton(master, botanist_helper, self, settings_fd,
                                               outliner=Outliner())
-        self.gpbutton = GPButton(master, self, outliner=Outliner())
+        self.gpbutton = GPButton(master, self, outliner=Outliner(), reader=Reader())
         self.expander = Expand(master, self, settings_fd, win32_enumhandler)
         self.lock_image = ImageTk.PhotoImage(Image.open('icons/unlocked.png'))
         self.lock = Button(master,
