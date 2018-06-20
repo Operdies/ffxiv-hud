@@ -140,6 +140,7 @@ class Parser:
         self.table = table
         self.parse_dict = {
             'sold by merchant': self.parse_merchant,
+            'reduction resulting': self.parse_merchant,
             'venture': self.parse_merchant,
             'harvesting': self.harvest,
             'logging': self.harvest,

@@ -8,7 +8,11 @@ from collections import deque
 from src.Styles import apply_styles
 
 own_hwnd = None
-FPS = 250
+FPS = 60
+
+
+def get_xyhw():
+    return root.winfo_x(), root.winfo_y(), root.winfo_height(), root.winfo_width()
 
 
 def enum_handler(hwnd, lParam):
@@ -34,6 +38,14 @@ def should_unfocus(prior_hwnd, own_hwnd, app):
     return focused and borderless and not text_entry_active
 
 
+def update_dims(window_settings):
+    x, y, h, w = get_xyhw()
+    window_settings['x'] = x
+    window_settings['y'] = y
+    window_settings['h'] = h
+    window_settings['w'] = w
+
+
 with ContextManager('data'):
     root = Tk()
     root.protocol('WM_DELETE_WINDOW', exit_gracefully)
@@ -49,11 +61,14 @@ with ContextManager('data'):
         dt = fd['dt']
         ratio = fd['ratio']
 
+    window_settings = FileDict('settings/window_settings', default=500)
+
     # root.wm_attributes('-transparentcolor', 'black')
     botanist_helper = BotanistHelper(unix, dt, ratio)
     crawler = Crawler()
     root.wait_visibility(root)
-    root.geometry('{}x{}+{}+{}'.format(560, 600, 500, 500))
+    root.geometry(
+        '{}x{}+{}+{}'.format(window_settings['w'], window_settings['h'], window_settings['x'], window_settings['y']))
     app = MainWindow(root, botanist_helper, crawler, lambda: win32gui.EnumWindows(enum_handler, None))
     app.update_loop()  # initialise stuff before gui is shown
     win32gui.EnumWindows(enum_handler, None)
@@ -64,7 +79,7 @@ with ContextManager('data'):
     while True:
         start = time()
         win32gui.EnumWindows(enum_handler, None)
-        # print(own_hwnd)
+        update_dims(window_settings)
         hwnd = win32gui.GetForegroundWindow()
         root.call('wm', 'attributes', '.', '-topmost', '1')
         root.update_idletasks()

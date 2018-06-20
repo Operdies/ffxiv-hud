@@ -4,14 +4,15 @@ from tkinter.ttk import Label
 
 
 class GPButton:
-    def __init__(self, master, et, gpregen=6, max_gp=718, outliner=None, reader=None):
+    def __init__(self, master, et, settings, gpregen=6, outliner=None, reader=None):
         self.reader = reader
+        self.settings = settings
         self.text = StringVar()
         self.outliner = outliner
-        self.max_gp = max_gp
-        self.gp_sec = gpregen / 3#.356
+        self._max_gp = settings['max_gp'] if settings['max_gp'] else 0
+        self.gp_sec = gpregen / 3  # .356
         self.start = time()
-        self._gp = 700  # self.max_gp
+        self._gp = 0  # self.max_gp
         self.recent = None
         self.previous_text = None
         self.photo = None
@@ -22,10 +23,19 @@ class GPButton:
         self.commands = [
             ('set gp >:]', lambda: None),
         ]
-        for i in range(0, max_gp, 100):
+        for i in range(0, 701, 100):
             self.commands += [(str(i), self.set_gp(i))]
         self.init_context()
         et.updatees += [self.update]
+
+    @property
+    def max_gp(self):
+        return self._max_gp
+
+    @max_gp.setter
+    def max_gp(self, value):
+        self._max_gp = value
+        self.settings['max_gp'] = value
 
     @property
     def gp(self):
@@ -56,7 +66,7 @@ class GPButton:
         delta = event.delta
         sign = 1 if delta > 0 else -1
         # gp, _ = self.get_gp()
-        self.max_gp = self.max_gp + sign# * 10
+        self.max_gp = self.max_gp + sign  # * 10
         # self.start = time()
 
     def set_gp(self, value):
@@ -74,7 +84,7 @@ class GPButton:
         elapsed = time() - self.start
         current_gp = min(int(self.gp + self.gp_sec * elapsed), self.max_gp)
         missing_gp = self.max_gp - current_gp
-        time_remaining = max(int(missing_gp / self.gp_sec), 0)
+        time_remaining = max((missing_gp / self.gp_sec), 0)
         return current_gp, time_remaining
 
     def update(self):

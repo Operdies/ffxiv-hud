@@ -32,7 +32,7 @@ class MainWindow:
         self.settings_fd = settings_fd
         self.botanist_button = BotanistButton(master, botanist_helper, self, settings_fd,
                                               outliner=Outliner())
-        self.gpbutton = GPButton(master, self, outliner=Outliner(), reader=Reader())
+        self.gpbutton = GPButton(master, self, settings_fd, outliner=Outliner(), reader=Reader())
         self.expander = Expand(master, self, settings_fd, win32_enumhandler)
         self.lock_image = ImageTk.PhotoImage(Image.open('icons/unlocked.png'))
         self.lock = Button(master,
