@@ -37,9 +37,7 @@ class Crawler:
     def get_html(self, name):
         name = name.strip()
         name = '_'.join([Crawler.capitalise_word(word) for word in name.split(' ')])
-        print(name)
-        url_name = quote(name)
-        print(name)
+
         save_path = self.save_base + name + '.html'
         if os.path.exists(save_path):
             with open(save_path, 'r') as h:

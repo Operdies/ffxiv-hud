@@ -79,9 +79,25 @@ class Parser:
 
     @staticmethod
     def used_recipes(tds):
-        headers = Parser.get_headers(tds[0])
-        debug_print(headers)
-        return PLACEHOLDER
+        # headers = Parser.get_headers(tds[0])
+        headers = ['Item', 'Skill', 'Level']
+        item_names = []
+        skills = []
+        levels = []
+        table_rows = tds[0].table.tbody.find_all('tr')
+        for row in table_rows[1:]:
+            title, skill = row.find_all('td', recursive=False)
+            item_names += [(sanitize_string(title.a.get('title')), 'href')]
+            prof = sanitize_string(skill.div.a.get('title'))
+            prof = prof.replace('Category:', '').replace('Recipes', '')
+            skills += [prof]
+            number_text = sanitize_string(skill.text)
+            # print(number_text)
+            numbers = re.findall('.*?(\d*)\)', number_text)[0]
+            # print(numbers)
+            levels += [int(numbers[-4:])]
+
+        return {'Item': item_names, 'Skill': skills, 'Level': levels}
         # raise NotImplementedError
 
     @staticmethod
@@ -124,33 +140,35 @@ class Parser:
         return rows
 
     @staticmethod
-    def recipes(tds):
-        return PLACEHOLDER
-        headers = Parser.get_headers(tds[0])
-        debug_print(headers)
-        # print(items)
+    def recipes(tr):
+        trs = tr.find_all('tr')
+        header = ['amount', sanitize_string(' '.join(list(trs[0].stripped_strings)[-4:]))]
+        amounts = []
+        mats = []
+        items = trs[8:]
+        for item in items:
+            if str(item.td.get('align')) != 'center':
+                break
+            amounts += [sanitize_string(item.td.text)]
+            mats += [(sanitize_string(item.find('a').get('title')), 'href')]
 
-        for td in tds:
-            trs = td.div.table.tbody.find_all('tr')
-            for tr in trs:
-                debug_print(tr)
-            input()
+        return dict(zip(header, [amounts, mats]))
 
     def __init__(self, table):
         self.table = table
         self.parse_dict = {
             'sold by merchant': self.parse_merchant,
-            'reduction resulting': self.parse_merchant,
+            # 'reduction resulting': self.parse_merchant,
             'venture': self.parse_merchant,
             'harvesting': self.harvest,
             'logging': self.harvest,
             'mining': self.harvest,
-            'traded by merchant': self.parse_merchant,
-            'desynthesis': self.desynthesis,
+            # 'traded by merchant': self.parse_merchant,
+            # 'traded to': self.parse_merchant,
+            # 'desynthesis': self.desynthesis,
             'recipes using': self.used_recipes,
-            'used in quest': self.used_quest,
-            'used in levequest': self.used_leve,
-            'recipes': self.recipes,
+            # 'used in quest': self.used_quest,
+            # 'used in levequest': self.used_leve,
 
         }
 
@@ -162,21 +180,18 @@ class Parser:
         tds = tc[1].find_all('td')
         parse_key = str(title).lower().strip()
         result_table = {}
+        # print(parse_key)
 
+        result = {}
         if 'venture' in parse_key:
             result = self.parse_merchant(tds)
-            if len(result.keys()) > 0:
-                # print(title)
-                result_table[true_key] = result
-
+        elif 'recipes' in parse_key and not 'using' in parse_key:
+            result = self.recipes(tc[1])
         else:
             for key in self.parse_dict:
                 if key in parse_key:
                     result = self.parse_dict[key](tds)
-                    if len(result.keys()) > 0:
-                        # print(title)
-                        result_table[true_key] = result
 
-        if len(result_table.keys()) > 0:
-            # print(result_table)
-            return result_table
+        result_table[true_key] = result
+
+        return result_table

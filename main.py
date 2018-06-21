@@ -74,8 +74,8 @@ with ContextManager('data'):
     win32gui.EnumWindows(enum_handler, None)
     prior_hwnd = None
     q = deque(maxlen=3)
-    # root.geometry('{}x{}+{}+{}'.format(int(fd['width']), fd['height'], fd['x'], fd['y']))
-    # fd['width'], fd['height'], fd['x'], fd['y'] = 620, 20, 500, 500
+
+
     while True:
         start = time()
         win32gui.EnumWindows(enum_handler, None)
@@ -94,7 +94,7 @@ with ContextManager('data'):
             for ele in q:
                 try:
                     win32gui.SetForegroundWindow(ele)
-                    print('restoring', prior_hwnd)
+                    # print('restoring', prior_hwnd)
                     break
                 except:
 
@@ -102,6 +102,5 @@ with ContextManager('data'):
                     pass
 
         sleep_time = 1 / FPS - (time() - start)
-        # sleep(max(1 / FPS - (time() - start), 0))
         if sleep_time > 0:
             sleep(sleep_time)  # cap updates at FPS / sec
