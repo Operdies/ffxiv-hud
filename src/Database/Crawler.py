@@ -63,7 +63,7 @@ class Crawler:
         venture_table = []
         empty = True
         for t in tables:
-            key = list(t.keys())[0]
+            key = list(t)[0]
             if 'venture' in key.lower():
                 venture_table += [t]
                 empty = False
@@ -90,7 +90,8 @@ class Crawler:
         for table in tables:
             parser = Parser(table)
             data = parser.parse()
-            results += [data]
+            if len(list(data)) > 0:
+                results += [data]
 
         results = [result for result in results if result is not None]
         # print(results)

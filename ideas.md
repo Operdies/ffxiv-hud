@@ -37,6 +37,7 @@
 * cactpot solver like https://ff14-cactpot.wotax.net/
 * cancel current search (GO button that changes icon and functionality based on state?)
 * discord-like icons on left side of window to switch between windows
+* view equipment stats in item search
 
 
 ## Project-stuff:

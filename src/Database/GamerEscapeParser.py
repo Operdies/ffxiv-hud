@@ -182,7 +182,7 @@ class Parser:
         result_table = {}
         # print(parse_key)
 
-        result = {}
+        result = None
         if 'venture' in parse_key:
             result = self.parse_merchant(tds)
         elif 'recipes' in parse_key and not 'using' in parse_key:
@@ -192,6 +192,7 @@ class Parser:
                 if key in parse_key:
                     result = self.parse_dict[key](tds)
 
-        result_table[true_key] = result
+        if result is not None:
+            result_table[true_key] = result
 
         return result_table

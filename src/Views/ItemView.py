@@ -1,5 +1,5 @@
-from tkinter import Text, StringVar, HORIZONTAL, VERTICAL, Button
-from tkinter import ttk
+from tkinter import Text, StringVar, HORIZONTAL, VERTICAL#, Button
+from tkinter import ttk, Button
 from tkinter.ttk import Label, Notebook, Frame, Separator
 from .Tooltip import CreateToolTip
 from PIL import ImageTk, Image
@@ -33,9 +33,9 @@ class ItemView:
         self.text.set('Search GamerEscape here')
         self.master = master
         self.search_bar = self.make_searchfield()
-        self.et.one_time_updates += [lambda: self.execute_search('hingan flax', from_entry=True)]
-        self.et.one_time_updates += [lambda: self.execute_search('flax', from_entry=True)]
-        self.et.one_time_updates += [lambda: self.execute_search('leather', from_entry=True)]
+        # self.et.one_time_updates += [lambda: self.execute_search('hingan flax', from_entry=True)]
+        # self.et.one_time_updates += [lambda: self.execute_search('flax', from_entry=True)]
+        # self.et.one_time_updates += [lambda: self.execute_search('leather', from_entry=True)]
         self.et.updatees += [self.check_focus]
 
     def make_searchfield(self, entry_column=9):
@@ -53,12 +53,12 @@ class ItemView:
         text.bind('<Return>', self.on_return)
         text.bind('<Button-1>', self.on_click)
 
-        left_button = Button(master_frame, bg=darker_grey, image=self.left_img,
-                             command=lambda: self.traverse_searches(-1))  # , style='table.TLabel')
-        left_button.grid(column=entry_column - 2, row=0, sticky='nsew', padx=(0, 15))
-        right_button = Button(master_frame, bg=darker_grey, image=self.right_img,
-                              command=lambda: self.traverse_searches(1))  # , style='table.TLabel')
-        right_button.grid(column=entry_column - 1, row=0, sticky='nsew')
+        left_button = Button(master_frame, bg=darker_grey, image=self.left_img, relief='flat',
+                             command=lambda: self.traverse_searches(-1))
+        right_button = Button(master_frame, bg=darker_grey, image=self.right_img, relief='flat',
+                              command=lambda: self.traverse_searches(1))
+        left_button.grid(column=entry_column - 2, row=0, padx=(0, 15))
+        right_button.grid(column=entry_column - 1, row=0)
         # left_button.bind('<Button-1>', lambda e: self.traverse_searches(-1))
         # right_button.bind('<Button-1>', lambda e: self.traverse_searches(1))
         self.left_button = left_button
@@ -68,9 +68,9 @@ class ItemView:
         top_bar.grid(column=0, row=0, sticky='nsew')
         self.frame.columnconfigure(0, weight=1)
         self.wd(top_bar, self.master, self.et)
-        self.frame.columnconfigure(10, weight=0)
         self.frame.rowconfigure(0, weight=0)
         self.update_buttons()
+
 
         return text
 
